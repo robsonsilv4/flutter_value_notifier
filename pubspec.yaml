@@ -1,0 +1,18 @@
+name: value_notifier_test
+description: Flutter Widgets that make it easy to implement the BLoC (Business Logic Component) design pattern. Built to be used with the ValueNotifier class.
+version: 1.0.0
+
+environment:
+  sdk: ">=2.18.0 <3.0.0"
+  flutter: 3.3.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  meta: ^1.8.0
+  provider: ^6.0.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  very_good_analysis: ^3.1.0
