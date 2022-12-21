@@ -1,3 +1,7 @@
+# 1.1.0
+
+- docs: add usage and widgets documentation
+
 # 1.0.0
 
 Initial version of the library 🎉, based on [flutter_bloc](https://pub.dev/packages/flutter_bloc) from [bloc library](https://bloclibrary.dev/) 🧊.
