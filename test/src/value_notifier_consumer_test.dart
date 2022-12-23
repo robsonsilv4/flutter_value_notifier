@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:value_notifier_test/flutter_value_notifier.dart';
+import 'package:flutter_value_notifier/flutter_value_notifier.dart';
 
 class CounterNotifier extends ValueNotifier<int> {
   CounterNotifier({int seed = 0}) : super(seed);

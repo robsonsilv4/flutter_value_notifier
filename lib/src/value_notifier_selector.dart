@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:value_notifier_test/flutter_value_notifier.dart';
+import 'package:flutter_value_notifier/flutter_value_notifier.dart';
 
 typedef ValueNotifierWidgetSelector<V, T> = T Function(V value);
 
