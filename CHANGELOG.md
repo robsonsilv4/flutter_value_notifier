@@ -1,3 +1,9 @@
+# 1.2.0
+
+- style: fix test lints and missing names
+- feat: add example project
+- refactor: fix package name and imports
+
 # 1.1.0
 
 - docs: add usage and widgets documentation

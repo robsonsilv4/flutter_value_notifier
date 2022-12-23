@@ -1,6 +1,6 @@
 name: flutter_value_notifier
 description: Flutter Widgets that make it easy to implement the BLoC (Business Logic Component) design pattern. Built to be used with the ValueNotifier class.
-version: 1.0.0
+version: 1.2.0
 
 environment:
   sdk: ">=2.18.0 <3.0.0"
