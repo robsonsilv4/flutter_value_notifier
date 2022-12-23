@@ -11,70 +11,17 @@ class CounterNotifier extends ValueNotifier<int> {
 void main() {
   group('ValueNotifierConsumer', () {
     testWidgets(
-        'accesses the valueNotifier directly and passes initial value to builder and '
-        'nothing to listener', (tester) async {
-      final counterCubit = CounterNotifier();
-      final listenerValues = <int>[];
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: ValueNotifierConsumer<CounterNotifier, int>(
-              valueNotifier: counterCubit,
-              builder: (context, value) {
-                return Text('Value: $value');
-              },
-              listener: (_, value) {
-                listenerValues.add(value);
-              },
-            ),
-          ),
-        ),
-      );
-      expect(find.text('Value: 0'), findsOneWidget);
-      expect(listenerValues, isEmpty);
-    });
-
-    testWidgets(
-        'accesses the valueNotifier directly '
-        'and passes multiple values to builder and listener', (tester) async {
-      final counterCubit = CounterNotifier();
-      final listenerValues = <int>[];
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: ValueNotifierConsumer<CounterNotifier, int>(
-              valueNotifier: counterCubit,
-              builder: (context, value) {
-                return Text('Value: $value');
-              },
-              listener: (_, value) {
-                listenerValues.add(value);
-              },
-            ),
-          ),
-        ),
-      );
-      expect(find.text('Value: 0'), findsOneWidget);
-      expect(listenerValues, isEmpty);
-      counterCubit.increment();
-      await tester.pump();
-      expect(find.text('Value: 1'), findsOneWidget);
-      expect(listenerValues, [1]);
-    });
-
-    testWidgets(
-        'accesses the valueNotifier via context and passes initial value to builder',
-        (tester) async {
-      final counterCubit = CounterNotifier();
-      final listenerValues = <int>[];
-      await tester.pumpWidget(
-        ValueNotifierProvider<CounterNotifier>.value(
-          value: counterCubit,
-          child: MaterialApp(
+      'accesses the valueNotifier directly and passes initial value to builder '
+      'and nothing to listener',
+      (tester) async {
+        final counterNotifier = CounterNotifier();
+        final listenerValues = <int>[];
+        await tester.pumpWidget(
+          MaterialApp(
             home: Scaffold(
               body: ValueNotifierConsumer<CounterNotifier, int>(
-                valueNotifier: counterCubit,
-                builder: (_, value) {
+                valueNotifier: counterNotifier,
+                builder: (context, value) {
                   return Text('Value: $value');
                 },
                 listener: (_, value) {
@@ -83,22 +30,22 @@ void main() {
               ),
             ),
           ),
-        ),
-      );
-      expect(find.text('Value: 0'), findsOneWidget);
-      expect(listenerValues, isEmpty);
-    });
+        );
+        expect(find.text('Value: 0'), findsOneWidget);
+        expect(listenerValues, isEmpty);
+      },
+    );
 
     testWidgets(
-        'accesses the valueNotifier via context and passes multiple values to builder',
-        (tester) async {
-      final counterCubit = CounterNotifier();
+        'accesses the valueNotifier directly '
+        'and passes multiple values to builder and listener', (tester) async {
+      final counterNotifier = CounterNotifier();
       final listenerValues = <int>[];
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: ValueNotifierConsumer<CounterNotifier, int>(
-              valueNotifier: counterCubit,
+              valueNotifier: counterNotifier,
               builder: (context, value) {
                 return Text('Value: $value');
               },
@@ -111,22 +58,81 @@ void main() {
       );
       expect(find.text('Value: 0'), findsOneWidget);
       expect(listenerValues, isEmpty);
-      counterCubit.increment();
+      counterNotifier.increment();
       await tester.pump();
       expect(find.text('Value: 1'), findsOneWidget);
       expect(listenerValues, [1]);
     });
 
+    testWidgets(
+      'accesses the valueNotifier via context and passes initial value to '
+      'builder',
+      (tester) async {
+        final counterNotifier = CounterNotifier();
+        final listenerValues = <int>[];
+        await tester.pumpWidget(
+          ValueNotifierProvider<CounterNotifier>.value(
+            value: counterNotifier,
+            child: MaterialApp(
+              home: Scaffold(
+                body: ValueNotifierConsumer<CounterNotifier, int>(
+                  valueNotifier: counterNotifier,
+                  builder: (_, value) {
+                    return Text('Value: $value');
+                  },
+                  listener: (_, value) {
+                    listenerValues.add(value);
+                  },
+                ),
+              ),
+            ),
+          ),
+        );
+        expect(find.text('Value: 0'), findsOneWidget);
+        expect(listenerValues, isEmpty);
+      },
+    );
+
+    testWidgets(
+      'accesses the valueNotifier via context and passes multiple values to '
+      'builder',
+      (tester) async {
+        final counterNotifier = CounterNotifier();
+        final listenerValues = <int>[];
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: ValueNotifierConsumer<CounterNotifier, int>(
+                valueNotifier: counterNotifier,
+                builder: (context, value) {
+                  return Text('Value: $value');
+                },
+                listener: (_, value) {
+                  listenerValues.add(value);
+                },
+              ),
+            ),
+          ),
+        );
+        expect(find.text('Value: 0'), findsOneWidget);
+        expect(listenerValues, isEmpty);
+        counterNotifier.increment();
+        await tester.pump();
+        expect(find.text('Value: 1'), findsOneWidget);
+        expect(listenerValues, [1]);
+      },
+    );
+
     testWidgets('does not trigger rebuilds when buildWhen evaluates to false',
         (tester) async {
-      final counterCubit = CounterNotifier();
+      final counterNotifier = CounterNotifier();
       final listenerValues = <int>[];
       final builderValues = <int>[];
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: ValueNotifierConsumer<CounterNotifier, int>(
-              valueNotifier: counterCubit,
+              valueNotifier: counterNotifier,
               buildWhen: (previous, current) => (previous + current) % 3 == 0,
               builder: (context, value) {
                 builderValues.add(value);
@@ -143,14 +149,14 @@ void main() {
       expect(builderValues, [0]);
       expect(listenerValues, isEmpty);
 
-      counterCubit.increment();
+      counterNotifier.increment();
       await tester.pump();
 
       expect(find.text('Value: 0'), findsOneWidget);
       expect(builderValues, [0]);
       expect(listenerValues, [1]);
 
-      counterCubit.increment();
+      counterNotifier.increment();
       await tester.pumpAndSettle();
 
       expect(find.text('Value: 2'), findsOneWidget);
@@ -162,14 +168,14 @@ void main() {
         'does not trigger rebuilds when '
         'buildWhen evaluates to false (inferred valueNotifier)',
         (tester) async {
-      final counterCubit = CounterNotifier();
+      final counterNotifier = CounterNotifier();
       final listenerValues = <int>[];
       final builderValues = <int>[];
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: ValueNotifierProvider.value(
-              value: counterCubit,
+              value: counterNotifier,
               child: ValueNotifierConsumer<CounterNotifier, int>(
                 buildWhen: (previous, current) => (previous + current) % 3 == 0,
                 builder: (context, value) {
@@ -188,14 +194,14 @@ void main() {
       expect(builderValues, [0]);
       expect(listenerValues, isEmpty);
 
-      counterCubit.increment();
+      counterNotifier.increment();
       await tester.pump();
 
       expect(find.text('Value: 0'), findsOneWidget);
       expect(builderValues, [0]);
       expect(listenerValues, [1]);
 
-      counterCubit.increment();
+      counterNotifier.increment();
       await tester.pumpAndSettle();
 
       expect(find.text('Value: 2'), findsOneWidget);
@@ -203,10 +209,10 @@ void main() {
       expect(listenerValues, [1, 2]);
     });
 
-    testWidgets('updates when cubit/valueNotifier reference has changed',
+    testWidgets('updates when valueNotifier reference has changed',
         (tester) async {
       const buttonKey = Key('__button__');
-      var counterCubit = CounterNotifier();
+      var counterNotifier = CounterNotifier();
       final listenerValues = <int>[];
       final builderValues = <int>[];
       await tester.pumpWidget(
@@ -215,7 +221,7 @@ void main() {
             body: StatefulBuilder(
               builder: (context, setValue) {
                 return ValueNotifierConsumer<CounterNotifier, int>(
-                  valueNotifier: counterCubit,
+                  valueNotifier: counterNotifier,
                   builder: (context, value) {
                     builderValues.add(value);
                     return TextButton(
@@ -237,14 +243,14 @@ void main() {
       expect(builderValues, [0]);
       expect(listenerValues, isEmpty);
 
-      counterCubit.increment();
+      counterNotifier.increment();
       await tester.pump();
 
       expect(find.text('Value: 1'), findsOneWidget);
       expect(builderValues, [0, 1]);
       expect(listenerValues, [1]);
 
-      counterCubit = CounterNotifier();
+      counterNotifier = CounterNotifier();
       await tester.tap(find.byKey(buttonKey));
       await tester.pumpAndSettle();
 
@@ -255,14 +261,14 @@ void main() {
 
     testWidgets('does not trigger listen when listenWhen evaluates to false',
         (tester) async {
-      final counterCubit = CounterNotifier();
+      final counterNotifier = CounterNotifier();
       final listenerValues = <int>[];
       final builderValues = <int>[];
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: ValueNotifierConsumer<CounterNotifier, int>(
-              valueNotifier: counterCubit,
+              valueNotifier: counterNotifier,
               builder: (context, value) {
                 builderValues.add(value);
                 return Text('Value: $value');
@@ -279,14 +285,14 @@ void main() {
       expect(builderValues, [0]);
       expect(listenerValues, isEmpty);
 
-      counterCubit.increment();
+      counterNotifier.increment();
       await tester.pump();
 
       expect(find.text('Value: 1'), findsOneWidget);
       expect(builderValues, [0, 1]);
       expect(listenerValues, isEmpty);
 
-      counterCubit.increment();
+      counterNotifier.increment();
       await tester.pumpAndSettle();
 
       expect(find.text('Value: 2'), findsOneWidget);
@@ -303,10 +309,10 @@ void main() {
       final listenWhenPreviousValue = <int>[];
       final listenWhenCurrentValue = <int>[];
       final listenValues = <int>[];
-      final counterCubit = CounterNotifier();
+      final counterNotifier = CounterNotifier();
       await tester.pumpWidget(
         ValueNotifierConsumer<CounterNotifier, int>(
-          valueNotifier: counterCubit,
+          valueNotifier: counterNotifier,
           listenWhen: (previous, current) {
             if (current % 3 == 0) {
               listenWhenPreviousValue.add(previous);
@@ -333,7 +339,7 @@ void main() {
         ),
       );
       await tester.pump();
-      counterCubit
+      counterNotifier
         ..increment()
         ..increment()
         ..increment();

@@ -101,7 +101,7 @@ class MyAppNoProvider extends MaterialApp {
 class CounterPage extends StatelessWidget {
   const CounterPage({super.key, this.onBuild});
 
-  final Function? onBuild;
+  final void Function()? onBuild;
 
   @override
   Widget build(BuildContext context) {
@@ -121,6 +121,8 @@ class CounterPage extends StatelessWidget {
 }
 
 class RoutePage extends StatelessWidget {
+  const RoutePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -138,7 +140,7 @@ class RoutePage extends StatelessWidget {
             },
           ),
           ElevatedButton(
-            key: const Key('increment_buton'),
+            key: const Key('increment_button'),
             child: const SizedBox(),
             onPressed: () {
               ValueNotifierProvider.of<CounterNotifier>(context).increment();
@@ -258,13 +260,15 @@ void main() {
     });
 
     testWidgets('passes valueNotifier to children', (tester) async {
-      await tester.pumpWidget(MyApp(
-        create: (_) => CounterNotifier(),
-        child: const CounterPage(),
-      ));
+      await tester.pumpWidget(
+        MyApp(
+          create: (_) => CounterNotifier(),
+          child: const CounterPage(),
+        ),
+      );
 
       final counterText = tester.widget<Text>(
-        find.byKey((const Key('counter_text'))),
+        find.byKey(const Key('counter_text')),
       );
       expect(counterText.data, '0');
     });
@@ -366,12 +370,14 @@ void main() {
         'does not call close on valueNotifier if it was not loaded (lazily)',
         (tester) async {
       var closeCalled = false;
-      await tester.pumpWidget(MyApp(
-        create: (_) => CounterNotifier(onDispose: () => closeCalled = true),
-        child: RoutePage(),
-      ));
+      await tester.pumpWidget(
+        MyApp(
+          create: (_) => CounterNotifier(onDispose: () => closeCalled = true),
+          child: const RoutePage(),
+        ),
+      );
 
-      final routeButtonFinder = find.byKey((const Key('route_button')));
+      final routeButtonFinder = find.byKey(const Key('route_button'));
       expect(routeButtonFinder, findsOneWidget);
       expect(closeCalled, false);
 
@@ -385,14 +391,16 @@ void main() {
         'calls close on valueNotifier automatically when invoked (lazily)',
         (tester) async {
       var closeCalled = false;
-      await tester.pumpWidget(MyApp(
-        create: (_) => CounterNotifier(onDispose: () => closeCalled = true),
-        child: RoutePage(),
-      ));
-      final incrementButtonFinder = find.byKey(const Key('increment_buton'));
+      await tester.pumpWidget(
+        MyApp(
+          create: (_) => CounterNotifier(onDispose: () => closeCalled = true),
+          child: const RoutePage(),
+        ),
+      );
+      final incrementButtonFinder = find.byKey(const Key('increment_button'));
       expect(incrementButtonFinder, findsOneWidget);
       await tester.tap(incrementButtonFinder);
-      final routeButtonFinder = find.byKey((const Key('route_button')));
+      final routeButtonFinder = find.byKey(const Key('route_button'));
       expect(routeButtonFinder, findsOneWidget);
       expect(closeCalled, false);
 
@@ -405,7 +413,7 @@ void main() {
     testWidgets('does not close when created using value', (tester) async {
       var closeCalled = false;
       final value = CounterNotifier(onDispose: () => closeCalled = true);
-      final Widget child = RoutePage();
+      const Widget child = RoutePage();
       await tester.pumpWidget(MyApp(value: value, child: child));
 
       final routeButtonFinder = find.byKey(const Key('route_button'));
@@ -419,11 +427,12 @@ void main() {
     });
 
     testWidgets(
-        'should throw FlutterError if ValueNotifierProvider is not found in current '
-        'context', (tester) async {
-      await tester.pumpWidget(const MyAppNoProvider(home: CounterPage()));
-      final dynamic exception = tester.takeException();
-      const expectedMessage = '''
+      'should throw FlutterError if ValueNotifierProvider is not found in '
+      'current context',
+      (tester) async {
+        await tester.pumpWidget(const MyAppNoProvider(home: CounterPage()));
+        final dynamic exception = tester.takeException();
+        const expectedMessage = '''
         ValueNotifierProvider.of() called with a context that does not contain a CounterNotifier.
         No ancestor could be found starting from the context that was passed to ValueNotifierProvider.of<CounterNotifier>().
 
@@ -431,9 +440,10 @@ void main() {
 
         The context used was: CounterPage(dirty)
 ''';
-      expect(exception is FlutterError, true);
-      expect((exception as FlutterError).message, expectedMessage);
-    });
+        expect(exception is FlutterError, true);
+        expect((exception as FlutterError).message, expectedMessage);
+      },
+    );
 
     testWidgets(
         'should throw StateError if internal '
@@ -505,13 +515,15 @@ void main() {
     });
 
     testWidgets(
-        'should not rebuild widgets that inherited the valueNotifier if the valueNotifier is '
-        'changed', (tester) async {
+        'should not rebuild widgets that inherited the valueNotifier if the '
+        'valueNotifier is changed', (tester) async {
       var numBuilds = 0;
-      final Widget _child = CounterPage(onBuild: () => numBuilds++);
-      await tester.pumpWidget(MyStatefulApp(
-        child: _child,
-      ));
+      final Widget child = CounterPage(onBuild: () => numBuilds++);
+      await tester.pumpWidget(
+        MyStatefulApp(
+          child: child,
+        ),
+      );
       await tester.tap(find.byKey(const Key('iconButtonKey')));
       await tester.pump();
       expect(numBuilds, 1);
@@ -712,11 +724,13 @@ void main() {
 
     testWidgets('should not throw if listen returns null subscription',
         (tester) async {
-      await tester.pumpWidget(ValueNotifierProvider(
-        lazy: false,
-        create: (_) => MockValueNotifier(0),
-        child: const SizedBox(),
-      ));
+      await tester.pumpWidget(
+        ValueNotifierProvider(
+          lazy: false,
+          create: (_) => MockValueNotifier(0),
+          child: const SizedBox(),
+        ),
+      );
       expect(tester.takeException(), isNull);
     });
   });

@@ -8,16 +8,16 @@ class CounterNotifier extends ValueNotifier<int> {
   void increment() => value = value + 1;
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key, this.onListenerCalled});
+class TestApp extends StatefulWidget {
+  const TestApp({super.key, this.onListenerCalled});
 
   final ValueNotifierWidgetListener<int>? onListenerCalled;
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<TestApp> createState() => _TestAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _TestAppState extends State<TestApp> {
   late CounterNotifier _counterNotifier;
 
   @override
@@ -140,76 +140,84 @@ void main() {
     });
 
     testWidgets(
-        'updates when the valueNotifier is changed at runtime to a different valueNotifier '
-        'and unsubscribes from old valueNotifier', (tester) async {
-      var listenerCallCount = 0;
-      int? latestState;
-      final incrementFinder = find.byKey(
-        const Key('valueNotifier_listener_increment_button'),
-      );
-      final resetNotifierFinder = find.byKey(
-        const Key('value_notifier_listener_reset_button'),
-      );
-      await tester.pumpWidget(MyApp(
-        onListenerCalled: (_, value) {
-          listenerCallCount++;
-          latestState = value;
-        },
-      ));
+      'updates when the valueNotifier is changed at runtime to a different '
+      'valueNotifier and unsubscribes from old valueNotifier',
+      (tester) async {
+        var listenerCallCount = 0;
+        int? latestState;
+        final incrementFinder = find.byKey(
+          const Key('valueNotifier_listener_increment_button'),
+        );
+        final resetNotifierFinder = find.byKey(
+          const Key('value_notifier_listener_reset_button'),
+        );
+        await tester.pumpWidget(
+          TestApp(
+            onListenerCalled: (_, value) {
+              listenerCallCount++;
+              latestState = value;
+            },
+          ),
+        );
 
-      await tester.tap(incrementFinder);
-      await tester.pump();
-      expect(listenerCallCount, 1);
-      expect(latestState, 1);
+        await tester.tap(incrementFinder);
+        await tester.pump();
+        expect(listenerCallCount, 1);
+        expect(latestState, 1);
 
-      await tester.tap(incrementFinder);
-      await tester.pump();
-      expect(listenerCallCount, 2);
-      expect(latestState, 2);
+        await tester.tap(incrementFinder);
+        await tester.pump();
+        expect(listenerCallCount, 2);
+        expect(latestState, 2);
 
-      await tester.tap(resetNotifierFinder);
-      await tester.pump();
-      await tester.tap(incrementFinder);
-      await tester.pump();
-      expect(listenerCallCount, 3);
-      expect(latestState, 1);
-    });
+        await tester.tap(resetNotifierFinder);
+        await tester.pump();
+        await tester.tap(incrementFinder);
+        await tester.pump();
+        expect(listenerCallCount, 3);
+        expect(latestState, 1);
+      },
+    );
 
     testWidgets(
-        'does not update when the valueNotifier is changed at runtime to same valueNotifier '
-        'and stays subscribed to current valueNotifier', (tester) async {
-      var listenerCallCount = 0;
-      int? latestState;
-      final incrementFinder = find.byKey(
-        const Key('valueNotifier_listener_increment_button'),
-      );
-      final noopNotifierFinder = find.byKey(
-        const Key('value_notifier_listener_noop_button'),
-      );
-      await tester.pumpWidget(MyApp(
-        onListenerCalled: (context, value) {
-          listenerCallCount++;
-          latestState = value;
-        },
-      ));
+      'does not update when the valueNotifier is changed at runtime to same '
+      'valueNotifier and stays subscribed to current valueNotifier',
+      (tester) async {
+        var listenerCallCount = 0;
+        int? latestState;
+        final incrementFinder = find.byKey(
+          const Key('valueNotifier_listener_increment_button'),
+        );
+        final noopNotifierFinder = find.byKey(
+          const Key('value_notifier_listener_noop_button'),
+        );
+        await tester.pumpWidget(
+          TestApp(
+            onListenerCalled: (context, value) {
+              listenerCallCount++;
+              latestState = value;
+            },
+          ),
+        );
 
-      await tester.tap(incrementFinder);
-      await tester.pump();
-      expect(listenerCallCount, 1);
-      expect(latestState, 1);
+        await tester.tap(incrementFinder);
+        await tester.pump();
+        expect(listenerCallCount, 1);
+        expect(latestState, 1);
 
-      await tester.tap(incrementFinder);
-      await tester.pump();
-      expect(listenerCallCount, 2);
-      expect(latestState, 2);
+        await tester.tap(incrementFinder);
+        await tester.pump();
+        expect(listenerCallCount, 2);
+        expect(latestState, 2);
 
-      await tester.tap(noopNotifierFinder);
-      await tester.pump();
-      await tester.tap(incrementFinder);
-      await tester.pump();
-      expect(listenerCallCount, 3);
-      expect(latestState, 3);
-    });
+        await tester.tap(noopNotifierFinder);
+        await tester.pump();
+        await tester.tap(incrementFinder);
+        await tester.pump();
+        expect(listenerCallCount, 3);
+        expect(latestState, 3);
+      },
+    );
 
     testWidgets(
         'calls listenWhen on single value change with correct previous '
@@ -241,39 +249,41 @@ void main() {
     });
 
     testWidgets(
-        'calls listenWhen with previous listener value and current valueNotifier value',
-        (tester) async {
-      int? latestPreviousState;
-      var listenWhenCallCount = 0;
-      final values = <int>[];
-      final counterNotifier = CounterNotifier();
-      const expectedStates = [2];
-      await tester.pumpWidget(
-        ValueNotifierListener<CounterNotifier, int>(
-          valueNotifier: counterNotifier,
-          listenWhen: (previous, value) {
-            listenWhenCallCount++;
-            if ((previous + value) % 3 == 0) {
-              latestPreviousState = previous;
-              values.add(value);
-              return true;
-            }
-            return false;
-          },
-          listener: (_, __) {},
-          child: const SizedBox(),
-        ),
-      );
-      counterNotifier
-        ..increment()
-        ..increment()
-        ..increment();
-      await tester.pump();
+      'calls listenWhen with previous listener value and current valueNotifier '
+      'value',
+      (tester) async {
+        int? latestPreviousState;
+        var listenWhenCallCount = 0;
+        final values = <int>[];
+        final counterNotifier = CounterNotifier();
+        const expectedStates = [2];
+        await tester.pumpWidget(
+          ValueNotifierListener<CounterNotifier, int>(
+            valueNotifier: counterNotifier,
+            listenWhen: (previous, value) {
+              listenWhenCallCount++;
+              if ((previous + value) % 3 == 0) {
+                latestPreviousState = previous;
+                values.add(value);
+                return true;
+              }
+              return false;
+            },
+            listener: (_, __) {},
+            child: const SizedBox(),
+          ),
+        );
+        counterNotifier
+          ..increment()
+          ..increment()
+          ..increment();
+        await tester.pump();
 
-      expect(values, expectedStates);
-      expect(listenWhenCallCount, 3);
-      expect(latestPreviousState, 1);
-    });
+        expect(values, expectedStates);
+        expect(listenWhenCallCount, 3);
+        expect(latestPreviousState, 1);
+      },
+    );
 
     testWidgets('calls listenWhen and listener with correct value',
         (tester) async {
@@ -308,35 +318,37 @@ void main() {
     });
 
     testWidgets(
-        'infers the valueNotifier from the context if the valueNotifier is not provided',
-        (tester) async {
-      int? latestPreviousState;
-      var listenWhenCallCount = 0;
-      final values = <int>[];
-      final counterNotifier = CounterNotifier();
-      const expectedStates = [1];
-      await tester.pumpWidget(
-        ValueNotifierProvider.value(
-          value: counterNotifier,
-          child: ValueNotifierListener<CounterNotifier, int>(
-            listenWhen: (previous, value) {
-              listenWhenCallCount++;
-              latestPreviousState = previous;
-              values.add(value);
-              return true;
-            },
-            listener: (context, value) {},
-            child: const SizedBox(),
+      'infers the valueNotifier from the context if the valueNotifier is not '
+      'provided',
+      (tester) async {
+        int? latestPreviousState;
+        var listenWhenCallCount = 0;
+        final values = <int>[];
+        final counterNotifier = CounterNotifier();
+        const expectedStates = [1];
+        await tester.pumpWidget(
+          ValueNotifierProvider.value(
+            value: counterNotifier,
+            child: ValueNotifierListener<CounterNotifier, int>(
+              listenWhen: (previous, value) {
+                listenWhenCallCount++;
+                latestPreviousState = previous;
+                values.add(value);
+                return true;
+              },
+              listener: (context, value) {},
+              child: const SizedBox(),
+            ),
           ),
-        ),
-      );
-      counterNotifier.increment();
-      await tester.pump();
+        );
+        counterNotifier.increment();
+        await tester.pump();
 
-      expect(values, expectedStates);
-      expect(listenWhenCallCount, 1);
-      expect(latestPreviousState, 0);
-    });
+        expect(values, expectedStates);
+        expect(listenWhenCallCount, 1);
+        expect(latestPreviousState, 0);
+      },
+    );
 
     testWidgets(
         'calls listenWhen on multiple value change with correct previous '

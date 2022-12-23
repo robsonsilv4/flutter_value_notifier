@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_value_notifier/src/value_notifier_provider.dart';
+import 'package:provider/provider.dart';
 
 class MultiValueNotifierProvider extends MultiProvider {
   MultiValueNotifierProvider({
