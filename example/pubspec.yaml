@@ -1,0 +1,23 @@
+name: example
+description: A Flutter and flutter_value_notifier project.
+
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.18.5 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_value_notifier:
+    path: "../"
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  very_good_analysis: ^3.1.0
+
+flutter:
+  uses-material-design: true
