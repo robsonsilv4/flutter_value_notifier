@@ -1,20 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_value_notifier/flutter_value_notifier.dart';
 
-/// {@template counter_notifier}
-/// A simple [ValueNotifier] that manages an `int` as its state.
-/// {@endtemplate}
-class CounterNotifier extends ValueNotifier<int> {
-  /// {@macro counter_notifier}
-  CounterNotifier() : super(0);
-
-  /// Increments value and notify listeners.
-  void increment() => value = value + 1;
-
-  /// Decrements value and notify listeners.
-  void decrement() => value = value - 1;
-}
-
 /// {@template theme_notifier}
 /// A simple [ValueNotifier] that manages the [ThemeData] as its state.
 /// {@endtemplate}
@@ -40,6 +26,20 @@ class ThemeNotifier extends ValueNotifier<ThemeData> {
   void toggleTheme() {
     value = value.brightness == Brightness.dark ? _lightTheme : _darkTheme;
   }
+}
+
+/// {@template counter_notifier}
+/// A simple [ValueNotifier] that manages an `int` as its state.
+/// {@endtemplate}
+class CounterNotifier extends ValueNotifier<int> {
+  /// {@macro counter_notifier}
+  CounterNotifier() : super(0);
+
+  /// Increments value and notify listeners.
+  void increment() => value = value + 1;
+
+  /// Decrements value and notify listeners.
+  void decrement() => value = value - 1;
 }
 
 void main() {
