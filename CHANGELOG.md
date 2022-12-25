@@ -1,3 +1,13 @@
+# 1.4.0
+
+- doc: refactor 1.0.0 changelog
+- refactor: change example notifiers order
+- doc: add example api documentations
+- style: add rules from very_good_analysis 3.1.0
+- feat: add Flutter 3.0.x compatibility
+- chore: update provider to 6.0.5
+- chore: rename project description
+
 # 1.3.0
 
 - doc: add widgets api documentation
