@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_value_notifier/flutter_value_notifier.dart';
 
+/// {@template counter_notifier}
+/// A simple [ValueNotifier] that manages an `int` as its state.
+/// {@endtemplate}
 class CounterNotifier extends ValueNotifier<int> {
+  /// {@macro counter_notifier}
   CounterNotifier() : super(0);
 
+  /// Increments value and notify listeners.
   void increment() => value = value + 1;
 
+  /// Decrements value and notify listeners.
   void decrement() => value = value - 1;
 }
 
+/// {@template theme_notifier}
+/// A simple [ValueNotifier] that manages the [ThemeData] as its state.
+/// {@endtemplate}
 class ThemeNotifier extends ValueNotifier<ThemeData> {
+  /// {@macro theme_notifier}
   ThemeNotifier() : super(_lightTheme);
 
   static final _lightTheme = ThemeData(
@@ -26,6 +36,7 @@ class ThemeNotifier extends ValueNotifier<ThemeData> {
     brightness: Brightness.dark,
   );
 
+  /// Toggles the current brightness between light and dark.
   void toggleTheme() {
     value = value.brightness == Brightness.dark ? _lightTheme : _darkTheme;
   }
@@ -35,7 +46,14 @@ void main() {
   runApp(const App());
 }
 
+/// {@template app}
+/// A [StatelessWidget] that:
+/// * uses [ValueNotifier](https://api.flutter.dev/flutter/foundation/ValueNotifier-class.html) and
+/// [flutter_value_notifier](https://pub.dev/packages/flutter_value_notifier)
+/// to manage the state of a counter and the app theme.
+/// {@endtemplate}
 class App extends StatelessWidget {
+  /// {@macro app}
   const App({super.key});
 
   @override
@@ -47,7 +65,14 @@ class App extends StatelessWidget {
   }
 }
 
+/// {@template app_view}
+/// A [StatelessWidget] that:
+/// * reacts to value changes in the [ThemeNotifier]
+/// and updates the theme of the [MaterialApp].
+/// * renders the [CounterPage].
+/// {@endtemplate}
 class AppView extends StatelessWidget {
+  /// {@macro app_view}
   const AppView({super.key});
 
   @override
@@ -63,7 +88,12 @@ class AppView extends StatelessWidget {
   }
 }
 
+/// {@template counter_page}
+/// A [StatelessWidget] that:
+/// * provides a [CounterNotifier] to the [CounterView].
+/// {@endtemplate}
 class CounterPage extends StatelessWidget {
+  /// {@macro counter_page}
   const CounterPage({super.key});
 
   @override
@@ -75,7 +105,12 @@ class CounterPage extends StatelessWidget {
   }
 }
 
+/// {@template counter_view}
+/// A [StatelessWidget] that:
+/// * demonstrates how to consume and interact with a [CounterNotifier].
+/// {@endtemplate}
 class CounterView extends StatelessWidget {
+  /// {@macro counter_view}
   const CounterView({super.key});
 
   @override

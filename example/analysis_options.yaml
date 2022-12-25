@@ -2,7 +2,6 @@ include: package:very_good_analysis/analysis_options.3.0.2.yaml
 
 linter:
   rules:
-    public_member_api_docs: false
     avoid_final_parameters: true
     avoid_multiple_declarations_per_line: true
     depend_on_referenced_packages: true
