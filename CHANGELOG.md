@@ -1,3 +1,8 @@
+# 1.3.0
+
+- doc: add widgets api documentation
+- style: enable rule public_member_api_docs
+
 # 1.2.0
 
 - style: fix test lints and missing names
