@@ -2,11 +2,25 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
+/// Mixin which allows `MultiValueNotifierProvider` to infer the types
+/// of multiple [ValueNotifierProvider]s.
 mixin ValueNotifierProviderSingleChildWidget on SingleChildWidget {}
 
+/// {@template value_notifier_provider}
+/// Takes a [Create] function that is responsible for
+/// creating the [ValueNotifier] and a [child] which will have access
+/// to the instance via `ValueNotifierProvider.of(context)`.
+/// It is used as a dependency injection (DI) widget so that a single instance
+/// of a [ValueNotifier] can be provided to multiple widgets within a subtree.
+///
+/// It automatically handles closing the instance when used with [Create].
+/// By default, [Create] is called only when the instance is accessed.
+/// To override this behavior, set [lazy] to `false`.
+/// {@endtemplate}
 class ValueNotifierProvider<T extends ValueNotifier<Object?>>
     extends SingleChildStatelessWidget
     with ValueNotifierProviderSingleChildWidget {
+  /// {@macro value_notifier_provider}
   const ValueNotifierProvider({
     super.key,
     required Create<T> create,
@@ -16,6 +30,17 @@ class ValueNotifierProvider<T extends ValueNotifier<Object?>>
         _value = null,
         super(child: child);
 
+  /// Takes a [value] and a [child] which will have access to the [value] via
+  /// `ValueNotifierProvider.of(context)`.
+  /// When `ValueNotifierProvider.value` is used, the [ValueNotifier]
+  /// will not be automatically closed.
+  /// As a result, `ValueNotifierProvider.value` should only be used for
+  /// providing existing instances to new subtrees.
+  ///
+  /// A new [ValueNotifier] should not be created in
+  /// `ValueNotifierProvider.value`.
+  /// New instances should always be created using the
+  /// default constructor within the [Create] function.
   const ValueNotifierProvider.value({
     super.key,
     required T value,
@@ -25,11 +50,26 @@ class ValueNotifierProvider<T extends ValueNotifier<Object?>>
         lazy = true,
         super(child: child);
 
+  /// Widget which will have access to the [ValueNotifier].
   final Widget? child;
+
+  /// Whether the [ValueNotifier] should be created lazily.
+  /// Defaults to `true`.
   final bool lazy;
+
   final Create<T>? _create;
   final T? _value;
 
+  /// Method that allows widgets to access a [ValueNotifier] instance
+  /// as long as their `BuildContext` contains a [ValueNotifierProvider]
+  /// instance.
+  ///
+  /// If we want to access an instance of `ValueNotifierA` which was provided
+  /// higher up in the widget tree we can do so via:
+  ///
+  /// ```dart
+  /// ValueNotifierProvider.of<ValueNotifierA>(context);
+  /// ```
   static T of<T extends ValueNotifier<Object?>>(
     BuildContext context, {
     bool listen = false,

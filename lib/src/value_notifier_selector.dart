@@ -1,10 +1,23 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_value_notifier/flutter_value_notifier.dart';
 
+/// Signature for the `selector` function which
+/// is responsible for returning a selected value, [T], based on [value].
 typedef ValueNotifierWidgetSelector<V, T> = T Function(V value);
 
+/// {@template value_notifier_selector}
+/// [ValueNotifierSelector] is analogous to [ValueNotifierBuilder] but allows
+/// developers to filter updates by selecting a new value based on the
+/// valueNotifier value. Unnecessary builds are prevented if the selected
+/// value does not change.
+///
+/// **Note**: the selected value must be immutable in order for
+/// [ValueNotifierSelector] to accurately determine whether [builder]
+/// should be called again.
+/// {@endtemplate}
 class ValueNotifierSelector<VN extends ValueNotifier<V>, V, T>
     extends StatefulWidget {
+  /// {@macro value_notifier_selector}
   const ValueNotifierSelector({
     super.key,
     required this.selector,
@@ -12,8 +25,21 @@ class ValueNotifierSelector<VN extends ValueNotifier<V>, V, T>
     this.valueNotifier,
   });
 
+  /// The [valueNotifier] that the [ValueNotifierSelector] will interact with.
+  /// If omitted, [ValueNotifierSelector] will automatically perform a lookup
+  /// using [ValueNotifierProvider] and the current [BuildContext].
   final VN? valueNotifier;
+
+  /// The [builder] function which will be invoked
+  /// when the selected value changes.
+  /// The [builder] takes the [BuildContext] and selected `value` and
+  /// must return a widget.
+  /// This is analogous to the [builder] function in [ValueNotifierBuilder].
   final ValueNotifierWidgetBuilder<T> builder;
+
+  /// The [selector] function which will be invoked on each widget build
+  /// and is responsible for returning a selected value of type [T] based on
+  /// the current value.
   final ValueNotifierWidgetSelector<V, T> selector;
 
   @override

@@ -2,21 +2,62 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart' show ReadContext, SelectContext;
 import 'package:provider/single_child_widget.dart';
 
+/// Mixin which allows `MultiValueNotifierListener` to infer the types
+/// of multiple [ValueNotifierListener]s.
 mixin ValueNotifierListenerSingleChildWidget on SingleChildWidget {}
 
+/// Signature for the `listener` function which takes the `BuildContext` along
+/// with the `value` and is responsible for executing in response to
+/// `value` changes.
 typedef ValueNotifierWidgetListener<V> = void Function(
   BuildContext context,
   V value,
 );
 
+/// Signature for the `listenWhen` function which takes the previous `value`
+/// and the current `value` and is responsible for returning a [bool] which
+/// determines whether or not to call [ValueNotifierWidgetListener] of
+/// [ValueNotifierListener] with the current `value`.
 typedef ValueNotifierListenerCondition<V> = bool Function(
   V previous,
   V current,
 );
 
+/// {@template value_notifier_listener}
+/// Takes a [ValueNotifierWidgetListener] and an optional [valueNotifier] and
+/// invokes the [listener] in response to `value` changes in the
+/// [valueNotifier].
+/// It should be used for functionality that needs to occur only in response to
+/// a `value` change such as navigation, showing a `SnackBar`, showing
+/// a `Dialog`, etc...
+/// The [listener] is guaranteed to only be called once for each `value` change
+/// unlike the `builder` in `ValueNotifierBuilder`.
+///
+/// If the [valueNotifier] parameter is omitted, [ValueNotifierListener] will
+/// automatically perform a lookup using `ValueNotifierProvider` and the current
+/// `BuildContext`.
+///
+/// Only specify the [valueNotifier] if you wish to provide a [valueNotifier]
+/// that is otherwise not accessible via `ValueNotifierProvider` and the current
+/// `BuildContext`.
+/// {@endtemplate}
+///
+/// {@template value_notifier_listener_listen_when}
+/// An optional [listenWhen] can be implemented for more granular control
+/// over when [listener] is called.
+/// [listenWhen] will be invoked on each [valueNotifier] `value` change.
+/// [listenWhen] takes the previous `value` and current `value` and must
+/// return a [bool] which determines whether or not the [listener] function
+/// will be invoked.
+/// The previous `value` will be initialized to the `value` of the
+/// [valueNotifier] when the [ValueNotifierListener] is initialized.
+/// [listenWhen] is optional and if omitted, it will default to `true`.
+/// {@endtemplate}
 class ValueNotifierListener<VN extends ValueNotifier<V>, V>
     extends ValueNotifierListenerBase<VN, V>
     with ValueNotifierListenerSingleChildWidget {
+  /// {@macro value_notifier_listener}
+  /// {@macro value_notifier_listener_listen_when}
   const ValueNotifierListener({
     super.key,
     required super.listener,
@@ -26,8 +67,18 @@ class ValueNotifierListener<VN extends ValueNotifier<V>, V>
   });
 }
 
+/// {@template value_notifier_listener_base}
+/// Base class for widgets that listen to value changes in a specified
+/// [valueNotifier].
+///
+/// A [ValueNotifierListenerBase] is stateful and maintains the value
+/// subscription.
+/// The type of the value and what happens with each value change
+/// is defined by sub-classes.
+/// {@endtemplate}
 abstract class ValueNotifierListenerBase<VN extends ValueNotifier<V>, V>
     extends SingleChildStatefulWidget {
+  /// {@macro value_notifier_listener_base}
   const ValueNotifierListenerBase({
     super.key,
     required this.listener,
@@ -36,9 +87,22 @@ abstract class ValueNotifierListenerBase<VN extends ValueNotifier<V>, V>
     this.listenWhen,
   }) : super(child: child);
 
+  /// The widget which will be rendered as a descendant of the
+  /// [ValueNotifierListenerBase].
   final Widget? child;
+
+  /// The [valueNotifier] whose `value` will be listened to.
+  /// Whenever the [valueNotifier]'s `value` changes, [listener] will be
+  /// invoked.
   final VN? valueNotifier;
+
+  /// The [ValueNotifierWidgetListener] which will be called on every `value`
+  /// change.
+  /// This [listener] should be used for any code which needs to execute
+  /// in response to a `value` change.
   final ValueNotifierWidgetListener<V> listener;
+
+  /// {@macro value_notifier_listener_listen_when}
   final ValueNotifierListenerCondition<V>? listenWhen;
 
   @override
