@@ -1,8 +1,20 @@
-# flutter_value_notifier
+<p align="center">
+<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/high-voltage_26a1.png" height="100" alt="Flutter Value Notifier" />
+</p>
+
+<p align="center">
+<a href="https://pub.dev/packages/flutter_value_notifier"><img src="https://img.shields.io/pub/v/flutter_value_notifier.svg" alt="Pub"></a>
+<a href="https://github.com/robsonsilv4/flutter_value_notifier/actions"><img src="https://github.com/robsonsilv4/flutter_value_notifier/workflows/build/badge.svg" alt="build"></a>
+<a href="https://codecov.io/gh/robsonsilv4/flutter_value_notifier"><img src="https://codecov.io/gh/robsonsilv4/flutter_value_notifier/branch/master/graph/badge.svg" alt="Codecov"></a>
+<a href="https://github.com/robsonsilv4/bloc"><img src="https://img.shields.io/github/stars/robsonsilv4/bloc.svg?style=flat&logo=github&colorB=deeppink&label=stars" alt="Stars on Github"></a>
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
+</p>
+
+---
 
 Widgets that make it easy to use [ValueNotifier](https://api.flutter.dev/flutter/foundation/ValueNotifier-class.html) ⚡. Built to work with Flutter only!
 
-Based on [flutter_bloc](https://pub.dev/packages/flutter_valueNotifier) from [bloc library](https://valueNotifierlibrary.dev/) 🧊.
+Based on [flutter_bloc](https://pub.dev/packages/flutter_bloc) from [bloc library](https://bloclibrary.dev/).
 
 ## Usage
 
@@ -411,7 +423,8 @@ MultiDependencyProvider(
 
 ## Dart Versions
 
-- Dart 2: >= 2.18
+- Dart 2: >=2.17.0
+- Flutter 3: >=3.0.0
 
 ## Maintainers
 
