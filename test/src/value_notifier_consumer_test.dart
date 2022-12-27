@@ -20,7 +20,7 @@ void main() {
           MaterialApp(
             home: Scaffold(
               body: ValueNotifierConsumer<CounterNotifier, int>(
-                valueNotifier: counterNotifier,
+                notifier: counterNotifier,
                 builder: (context, value) {
                   return Text('Value: $value');
                 },
@@ -45,7 +45,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: ValueNotifierConsumer<CounterNotifier, int>(
-              valueNotifier: counterNotifier,
+              notifier: counterNotifier,
               builder: (context, value) {
                 return Text('Value: $value');
               },
@@ -76,7 +76,7 @@ void main() {
             child: MaterialApp(
               home: Scaffold(
                 body: ValueNotifierConsumer<CounterNotifier, int>(
-                  valueNotifier: counterNotifier,
+                  notifier: counterNotifier,
                   builder: (_, value) {
                     return Text('Value: $value');
                   },
@@ -103,7 +103,7 @@ void main() {
           MaterialApp(
             home: Scaffold(
               body: ValueNotifierConsumer<CounterNotifier, int>(
-                valueNotifier: counterNotifier,
+                notifier: counterNotifier,
                 builder: (context, value) {
                   return Text('Value: $value');
                 },
@@ -132,7 +132,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: ValueNotifierConsumer<CounterNotifier, int>(
-              valueNotifier: counterNotifier,
+              notifier: counterNotifier,
               buildWhen: (previous, current) => (previous + current) % 3 == 0,
               builder: (context, value) {
                 builderValues.add(value);
@@ -221,7 +221,7 @@ void main() {
             body: StatefulBuilder(
               builder: (context, setValue) {
                 return ValueNotifierConsumer<CounterNotifier, int>(
-                  valueNotifier: counterNotifier,
+                  notifier: counterNotifier,
                   builder: (context, value) {
                     builderValues.add(value);
                     return TextButton(
@@ -268,7 +268,7 @@ void main() {
         MaterialApp(
           home: Scaffold(
             body: ValueNotifierConsumer<CounterNotifier, int>(
-              valueNotifier: counterNotifier,
+              notifier: counterNotifier,
               builder: (context, value) {
                 builderValues.add(value);
                 return Text('Value: $value');
@@ -312,7 +312,7 @@ void main() {
       final counterNotifier = CounterNotifier();
       await tester.pumpWidget(
         ValueNotifierConsumer<CounterNotifier, int>(
-          valueNotifier: counterNotifier,
+          notifier: counterNotifier,
           listenWhen: (previous, current) {
             if (current % 3 == 0) {
               listenWhenPreviousValue.add(previous);

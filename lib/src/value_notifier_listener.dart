@@ -24,20 +24,20 @@ typedef ValueNotifierListenerCondition<V> = bool Function(
 );
 
 /// {@template value_notifier_listener}
-/// Takes a [ValueNotifierWidgetListener] and an optional [valueNotifier] and
+/// Takes a [ValueNotifierWidgetListener] and an optional [notifier] and
 /// invokes the [listener] in response to `value` changes in the
-/// [valueNotifier].
+/// [notifier].
 /// It should be used for functionality that needs to occur only in response to
 /// a `value` change such as navigation, showing a `SnackBar`, showing
 /// a `Dialog`, etc...
 /// The [listener] is guaranteed to only be called once for each `value` change
 /// unlike the `builder` in `ValueNotifierBuilder`.
 ///
-/// If the [valueNotifier] parameter is omitted, [ValueNotifierListener] will
+/// If the [notifier] parameter is omitted, [ValueNotifierListener] will
 /// automatically perform a lookup using `ValueNotifierProvider` and the current
 /// `BuildContext`.
 ///
-/// Only specify the [valueNotifier] if you wish to provide a [valueNotifier]
+/// Only specify the [notifier] if you wish to provide a [notifier]
 /// that is otherwise not accessible via `ValueNotifierProvider` and the current
 /// `BuildContext`.
 /// {@endtemplate}
@@ -45,12 +45,12 @@ typedef ValueNotifierListenerCondition<V> = bool Function(
 /// {@template value_notifier_listener_listen_when}
 /// An optional [listenWhen] can be implemented for more granular control
 /// over when [listener] is called.
-/// [listenWhen] will be invoked on each [valueNotifier] `value` change.
+/// [listenWhen] will be invoked on each [notifier] `value` change.
 /// [listenWhen] takes the previous `value` and current `value` and must
 /// return a [bool] which determines whether or not the [listener] function
 /// will be invoked.
 /// The previous `value` will be initialized to the `value` of the
-/// [valueNotifier] when the [ValueNotifierListener] is initialized.
+/// [notifier] when the [ValueNotifierListener] is initialized.
 /// [listenWhen] is optional and if omitted, it will default to `true`.
 /// {@endtemplate}
 class ValueNotifierListener<VN extends ValueNotifier<V>, V>
@@ -61,7 +61,7 @@ class ValueNotifierListener<VN extends ValueNotifier<V>, V>
   const ValueNotifierListener({
     super.key,
     required super.listener,
-    super.valueNotifier,
+    super.notifier,
     super.listenWhen,
     super.child,
   });
@@ -69,7 +69,7 @@ class ValueNotifierListener<VN extends ValueNotifier<V>, V>
 
 /// {@template value_notifier_listener_base}
 /// Base class for widgets that listen to value changes in a specified
-/// [valueNotifier].
+/// [notifier].
 ///
 /// A [ValueNotifierListenerBase] is stateful and maintains the value
 /// subscription.
@@ -82,7 +82,7 @@ abstract class ValueNotifierListenerBase<VN extends ValueNotifier<V>, V>
   const ValueNotifierListenerBase({
     super.key,
     required this.listener,
-    this.valueNotifier,
+    this.notifier,
     this.child,
     this.listenWhen,
   }) : super(child: child);
@@ -91,10 +91,10 @@ abstract class ValueNotifierListenerBase<VN extends ValueNotifier<V>, V>
   /// [ValueNotifierListenerBase].
   final Widget? child;
 
-  /// The [valueNotifier] whose `value` will be listened to.
-  /// Whenever the [valueNotifier]'s `value` changes, [listener] will be
+  /// The [notifier] whose `value` will be listened to.
+  /// Whenever the [notifier]'s `value` changes, [listener] will be
   /// invoked.
-  final VN? valueNotifier;
+  final VN? notifier;
 
   /// The [ValueNotifierWidgetListener] which will be called on every `value`
   /// change.
@@ -113,27 +113,27 @@ abstract class ValueNotifierListenerBase<VN extends ValueNotifier<V>, V>
 class _ValueNotifierListenerBaseState<VN extends ValueNotifier<V>, V>
     extends SingleChildState<ValueNotifierListenerBase<VN, V>> {
   void Function()? _subscription;
-  late VN _valueNotifier;
+  late VN _notifier;
   late V _previousValue;
 
   @override
   void initState() {
     super.initState();
-    _valueNotifier = widget.valueNotifier ?? context.read<VN>();
-    _previousValue = _valueNotifier.value;
+    _notifier = widget.notifier ?? context.read<VN>();
+    _previousValue = _notifier.value;
     _subscribe();
   }
 
   @override
   void didUpdateWidget(ValueNotifierListenerBase<VN, V> oldWidget) {
     super.didUpdateWidget(oldWidget);
-    final oldValueNotifier = oldWidget.valueNotifier ?? context.read<VN>();
-    final currentValueNotifier = widget.valueNotifier ?? oldValueNotifier;
-    if (oldValueNotifier != currentValueNotifier) {
+    final oldNotifier = oldWidget.notifier ?? context.read<VN>();
+    final currentNotifier = widget.notifier ?? oldNotifier;
+    if (oldNotifier != currentNotifier) {
       if (_subscription != null) {
         _unsubscribe();
-        _valueNotifier = currentValueNotifier;
-        _previousValue = _valueNotifier.value;
+        _notifier = currentNotifier;
+        _previousValue = _notifier.value;
       }
       _subscribe();
     }
@@ -142,12 +142,12 @@ class _ValueNotifierListenerBaseState<VN extends ValueNotifier<V>, V>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final valueNotifier = widget.valueNotifier ?? context.read<VN>();
-    if (_valueNotifier != valueNotifier) {
+    final notifier = widget.notifier ?? context.read<VN>();
+    if (_notifier != notifier) {
       if (_subscription != null) {
         _unsubscribe();
-        _valueNotifier = valueNotifier;
-        _previousValue = _valueNotifier.value;
+        _notifier = notifier;
+        _previousValue = _notifier.value;
       }
       _subscribe();
     }
@@ -159,10 +159,8 @@ class _ValueNotifierListenerBaseState<VN extends ValueNotifier<V>, V>
       child != null,
       '''${widget.runtimeType} used outside of MultiValueNotifierListener must specify a child''',
     );
-    if (widget.valueNotifier == null) {
-      context.select<VN, bool>(
-        (valueNotifier) => identical(_valueNotifier, valueNotifier),
-      );
+    if (widget.notifier == null) {
+      context.select<VN, bool>((notifier) => identical(_notifier, notifier));
     }
     return child!;
   }
@@ -175,18 +173,17 @@ class _ValueNotifierListenerBaseState<VN extends ValueNotifier<V>, V>
 
   void _subscribe() {
     _subscription = () {
-      if (widget.listenWhen?.call(_previousValue, _valueNotifier.value) ??
-          true) {
-        widget.listener(context, _valueNotifier.value);
+      if (widget.listenWhen?.call(_previousValue, _notifier.value) ?? true) {
+        widget.listener(context, _notifier.value);
       }
-      _previousValue = _valueNotifier.value;
+      _previousValue = _notifier.value;
     };
-    _valueNotifier.addListener(_subscription!);
+    _notifier.addListener(_subscription!);
   }
 
   void _unsubscribe() {
     if (_subscription != null) {
-      _valueNotifier.removeListener(_subscription!);
+      _notifier.removeListener(_subscription!);
     }
     _subscription = null;
   }

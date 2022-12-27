@@ -17,7 +17,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: ValueNotifierSelector<CounterNotifier, int, bool>(
-            valueNotifier: counterNotifier,
+            notifier: counterNotifier,
             selector: (value) => value.isEven,
             builder: (_, value) {
               builderCallCount++;
@@ -38,7 +38,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: ValueNotifierSelector<CounterNotifier, int, bool>(
-            valueNotifier: counterNotifier,
+            notifier: counterNotifier,
             selector: (value) => value == 1,
             builder: (_, value) {
               builderCallCount++;
@@ -150,7 +150,7 @@ void main() {
         Directionality(
           textDirection: TextDirection.ltr,
           child: ValueNotifierSelector<CounterNotifier, int, bool>(
-            valueNotifier: firstCounterNotifier,
+            notifier: firstCounterNotifier,
             selector: (value) => value.isEven,
             builder: (_, value) => Text('isEven: $value'),
           ),
@@ -168,7 +168,7 @@ void main() {
         Directionality(
           textDirection: TextDirection.ltr,
           child: ValueNotifierSelector<CounterNotifier, int, bool>(
-            valueNotifier: secondCounterNotifier,
+            notifier: secondCounterNotifier,
             selector: (value) => value.isEven,
             builder: (_, value) => Text('isEven: $value'),
           ),

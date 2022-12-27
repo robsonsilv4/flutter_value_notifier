@@ -130,7 +130,7 @@ class TestApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueNotifierBuilder<ThemeNotifier, ThemeData>(
-      valueNotifier: ValueNotifierProvider.of<ThemeNotifier>(context),
+      notifier: ValueNotifierProvider.of<ThemeNotifier>(context),
       builder: (_, theme) {
         return MaterialApp(home: const CounterPage(), theme: theme);
       },
@@ -147,7 +147,7 @@ class CounterPage extends StatelessWidget {
 
     return Scaffold(
       body: ValueNotifierBuilder<CounterNotifier, int>(
-        valueNotifier: counterNotifier,
+        notifier: counterNotifier,
         builder: (context, count) {
           return Center(
             child: Text('$count', key: const Key('counter_text')),

@@ -20,30 +20,30 @@ typedef ValueNotifierBuilderCondition<V> = bool Function(V previous, V current);
 /// `values`.
 /// [ValueNotifierBuilder] is analogous to [ValueListenableBuilder] but has
 /// simplified API to reduce the amount of boilerplate code needed as well as
-/// [valueNotifier]-specific performance improvements.
+/// [notifier]-specific performance improvements.
 /// Please refer to [ValueNotifierListener] if you want to "do" anything in
 /// response to `value` changes such as navigation, showing a dialog, etc...
 ///
-/// If the [valueNotifier] parameter is omitted, [ValueNotifierBuilder] will
+/// If the [notifier] parameter is omitted, [ValueNotifierBuilder] will
 /// automatically perform a lookup using [ValueNotifierProvider] and the current
 /// [BuildContext].
 ///
-/// Only specify the [valueNotifier] if you wish to provide a [valueNotifier]
+/// Only specify the [notifier] if you wish to provide a [notifier]
 /// that is otherwise not accessible via [ValueNotifierProvider] and the current
 /// [BuildContext].
 /// {@endtemplate}
 ///
-/// {@template valueNotifier_builder_build_when}
+/// {@template value_notifier_builder_build_when}
 /// An optional [buildWhen] can be implemented for more granular control over
 /// how often [ValueNotifierBuilder] rebuilds.
 /// [buildWhen] should only be used for performance optimizations as it
 /// provides no security about the value passed to the [builder] function.
-/// [buildWhen] will be invoked on each [valueNotifier] `value` change.
+/// [buildWhen] will be invoked on each [notifier] `value` change.
 /// [buildWhen] takes the previous `value` and current `value` and must
 /// return a [bool] which determines whether or not the [builder] function will
 /// be invoked.
-/// The previous `value` will be initialized to the `value` of the
-/// [valueNotifier] when the [ValueNotifierBuilder] is initialized.
+/// The previous `value` will be initialized to the `value` of the [notifier]
+/// when the [ValueNotifierBuilder] is initialized.
 /// [buildWhen] is optional and if omitted, it will default to `true`.
 /// {@endtemplate}
 class ValueNotifierBuilder<VN extends ValueNotifier<V>, V>
@@ -53,7 +53,7 @@ class ValueNotifierBuilder<VN extends ValueNotifier<V>, V>
   const ValueNotifierBuilder({
     super.key,
     required this.builder,
-    super.valueNotifier,
+    super.notifier,
     super.buildWhen,
   });
 
@@ -69,7 +69,7 @@ class ValueNotifierBuilder<VN extends ValueNotifier<V>, V>
 
 /// {@template value_notifier_builder_base}
 /// Base class for widgets that build themselves based on interaction with
-/// a specified [valueNotifier].
+/// a specified [notifier].
 ///
 /// A [ValueNotifierBuilderBase] is stateful and maintains the value of the
 /// interaction so far. The type of the value and how it is updated with each
@@ -80,18 +80,16 @@ abstract class ValueNotifierBuilderBase<VN extends ValueNotifier<V>, V>
   /// {@macro value_notifier_builder_base}
   const ValueNotifierBuilderBase({
     super.key,
-    this.valueNotifier,
+    this.notifier,
     this.buildWhen,
   });
 
-  /// The [valueNotifier] that the [ValueNotifierBuilderBase] will interact
-  /// with.
+  /// The [notifier] that the [ValueNotifierBuilderBase] will interact with.
   /// If omitted, [ValueNotifierBuilderBase] will automatically perform a lookup
-  /// using
-  /// [ValueNotifierProvider] and the current `BuildContext`.
-  final VN? valueNotifier;
+  /// using [ValueNotifierProvider] and the current [BuildContext].
+  final VN? notifier;
 
-  /// {@macro valueNotifier_builder_build_when}
+  /// {@macro value_notifier_builder_build_when}
   final ValueNotifierBuilderCondition<V>? buildWhen;
 
   /// Returns a widget based on the `BuildContext` and current [value].
@@ -104,48 +102,46 @@ abstract class ValueNotifierBuilderBase<VN extends ValueNotifier<V>, V>
 
 class _ValueNotifierBuilderBaseState<VN extends ValueNotifier<V>, V>
     extends State<ValueNotifierBuilderBase<VN, V>> {
-  late VN _valueNotifier;
+  late VN _notifier;
   late V _value;
 
   @override
   void initState() {
     super.initState();
-    _valueNotifier = widget.valueNotifier ?? context.read<VN>();
-    _value = _valueNotifier.value;
+    _notifier = widget.notifier ?? context.read<VN>();
+    _value = _notifier.value;
   }
 
   @override
   void didUpdateWidget(ValueNotifierBuilderBase<VN, V> oldWidget) {
     super.didUpdateWidget(oldWidget);
-    final oldValueNotifier = oldWidget.valueNotifier ?? context.read<VN>();
-    final currentValueNotifier = widget.valueNotifier ?? oldValueNotifier;
-    if (oldValueNotifier != currentValueNotifier) {
-      _valueNotifier = currentValueNotifier;
-      _value = _valueNotifier.value;
+    final oldNotifier = oldWidget.notifier ?? context.read<VN>();
+    final currentNotifier = widget.notifier ?? oldNotifier;
+    if (oldNotifier != currentNotifier) {
+      _notifier = currentNotifier;
+      _value = _notifier.value;
     }
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final valueNotifier = widget.valueNotifier ?? context.read<VN>();
-    if (_valueNotifier != valueNotifier) {
-      _valueNotifier = valueNotifier;
-      _value = _valueNotifier.value;
+    final notifier = widget.notifier ?? context.read<VN>();
+    if (_notifier != notifier) {
+      _notifier = notifier;
+      _value = _notifier.value;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.valueNotifier == null) {
-      context.select<VN, bool>(
-        (valueNotifier) => identical(_valueNotifier, valueNotifier),
-      );
+    if (widget.notifier == null) {
+      context.select<VN, bool>((notifier) => identical(_notifier, notifier));
     }
     return ValueNotifierListener<VN, V>(
-      valueNotifier: _valueNotifier,
+      notifier: _notifier,
       listenWhen: widget.buildWhen,
-      listener: (context, value) => setState(() => _value = value),
+      listener: (_, value) => setState(() => _value = value),
       child: widget.build(context, _value),
     );
   }

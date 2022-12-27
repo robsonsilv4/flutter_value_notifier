@@ -34,7 +34,7 @@ class ThemeAppState extends State<ThemeApp> {
   @override
   Widget build(BuildContext context) {
     return ValueNotifierBuilder<ValueNotifier<ThemeData>, ThemeData>(
-      valueNotifier: _themeValueNotifier,
+      notifier: _themeValueNotifier,
       // ignore: unnecessary_parenthesis
       builder: ((context, theme) {
         _onBuild();
@@ -91,7 +91,7 @@ class CounterApp extends StatefulWidget {
 }
 
 class CounterAppState extends State<CounterApp> {
-  final CounterValueNotifier _valueNotifier = CounterValueNotifier();
+  final CounterValueNotifier _notifier = CounterValueNotifier();
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +101,7 @@ class CounterAppState extends State<CounterApp> {
         body: Column(
           children: <Widget>[
             ValueNotifierBuilder<CounterValueNotifier, int>(
-              valueNotifier: _valueNotifier,
+              notifier: _notifier,
               buildWhen: (previousValue, value) {
                 return (previousValue + value) % 3 == 0;
               },
@@ -113,7 +113,7 @@ class CounterAppState extends State<CounterApp> {
               },
             ),
             ValueNotifierBuilder<CounterValueNotifier, int>(
-              valueNotifier: _valueNotifier,
+              notifier: _notifier,
               builder: (_, count) {
                 return Text(
                   '$count',
@@ -123,7 +123,7 @@ class CounterAppState extends State<CounterApp> {
             ),
             ElevatedButton(
               key: const Key('counterAppIncrementButton'),
-              onPressed: _valueNotifier.increment,
+              onPressed: _notifier.increment,
               child: const SizedBox(),
             )
           ],
@@ -397,7 +397,7 @@ void main() {
         final counterValueNotifier = CounterValueNotifier();
         await tester.pumpWidget(
           ValueNotifierBuilder<CounterValueNotifier, int>(
-            valueNotifier: counterValueNotifier,
+            notifier: counterValueNotifier,
             buildWhen: (previous, value) {
               if (value.isEven) {
                 buildWhenPreviousValue.add(previous);
@@ -437,7 +437,7 @@ void main() {
             child: StatefulBuilder(
               builder: (_, setState) =>
                   ValueNotifierBuilder<CounterValueNotifier, int>(
-                valueNotifier: counterValueNotifier,
+                notifier: counterValueNotifier,
                 buildWhen: (_, value) => value.isEven,
                 builder: (_, value) {
                   values.add(value);

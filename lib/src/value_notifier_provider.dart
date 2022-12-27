@@ -76,8 +76,8 @@ class ValueNotifierProvider<T extends ValueNotifier<Object?>>
   }) {
     try {
       return Provider.of<T>(context, listen: listen);
-    } on ProviderNotFoundException catch (e) {
-      if (e.valueType != T) rethrow;
+    } on ProviderNotFoundException catch (exception) {
+      if (exception.valueType != T) rethrow;
       throw FlutterError(
         '''
         ValueNotifierProvider.of() called with a context that does not contain a $T.
@@ -107,7 +107,7 @@ class ValueNotifierProvider<T extends ValueNotifier<Object?>>
           )
         : InheritedProvider<T>(
             create: _create,
-            dispose: (_, valueNotifier) => valueNotifier.dispose(),
+            dispose: (_, notifier) => notifier.dispose(),
             startListening: _startListening,
             lazy: lazy,
             child: child,
@@ -115,10 +115,10 @@ class ValueNotifierProvider<T extends ValueNotifier<Object?>>
   }
 
   static VoidCallback _startListening(
-    InheritedContext<ValueNotifier<Object?>?> e,
+    InheritedContext<ValueNotifier<Object?>?> element,
     ValueNotifier<Object?> value,
   ) {
-    void subscription() => e.markNeedsNotifyDependents();
+    void subscription() => element.markNeedsNotifyDependents();
     value.addListener(subscription);
     return () => value.removeListener(subscription);
   }

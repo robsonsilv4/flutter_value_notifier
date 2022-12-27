@@ -23,11 +23,11 @@ void main() {
         MultiValueNotifierListener(
           listeners: [
             ValueNotifierListener<CounterNotifier, int>(
-              valueNotifier: counterNotifierA,
+              notifier: counterNotifierA,
               listener: (_, value) => valuesA.add(value),
             ),
             ValueNotifierListener<CounterNotifier, int>(
-              valueNotifier: counterNotifierB,
+              notifier: counterNotifierB,
               listener: (_, value) => valuesB.add(value),
             ),
           ],
@@ -66,11 +66,11 @@ void main() {
         MultiValueNotifierListener(
           listeners: [
             ValueNotifierListener(
-              valueNotifier: counterNotifierA,
+              notifier: counterNotifierA,
               listener: (BuildContext context, int value) => valuesA.add(value),
             ),
             ValueNotifierListener(
-              valueNotifier: counterNotifierB,
+              notifier: counterNotifierB,
               listener: (BuildContext context, int value) => valuesB.add(value),
             ),
           ],

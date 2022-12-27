@@ -110,7 +110,7 @@ class CounterPage extends StatelessWidget {
 
     return Scaffold(
       body: ValueNotifierBuilder<CounterNotifier, int>(
-        valueNotifier: counterValueNotifier,
+        notifier: counterValueNotifier,
         builder: (context, count) {
           onBuild?.call();
           return Text('$count', key: const Key('counter_text'));
