@@ -9,8 +9,7 @@ import 'package:provider/provider.dart';
 /// need to nest multiple [ValueNotifierProvider]s.
 ///
 /// [MultiValueNotifierProvider] converts the [ValueNotifierProvider] list into
-/// a tree of nested
-/// [ValueNotifierProvider] widgets.
+/// a tree of nested [ValueNotifierProvider] widgets.
 /// As a result, the only advantage of using [MultiValueNotifierProvider] is
 /// improved readability due to the reduction in nesting and boilerplate.
 /// {@endtemplate}
