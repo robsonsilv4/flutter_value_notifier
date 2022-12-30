@@ -190,7 +190,7 @@ MultiValueNotifierProvider(
 
 See `ValueNotifierListener` if you want to "do" anything in response to value changes such as navigation, showing a dialog, etc...
 
-If the `valueNotifier` parameter is omitted, `ValueNotifierBuilder` will automatically perform a lookup using `ValueNotifierProvider` and the current `BuildContext`.
+If the `notifier` parameter is omitted, `ValueNotifierBuilder` will automatically perform a lookup using `ValueNotifierProvider` and the current `BuildContext`.
 
 ```dart
 ValueNotifierBuilder<NotifierA, NotifierAState>(
@@ -200,11 +200,11 @@ ValueNotifierBuilder<NotifierA, NotifierAState>(
 )
 ```
 
-Only specify the valueNotifier if you wish to provide a ValueNotifier that will be scoped to a single widget and isn't accessible via a parent `ValueNotifierProvider` and the current `BuildContext`.
+Only specify the notifier if you wish to provide a ValueNotifier that will be scoped to a single widget and isn't accessible via a parent `ValueNotifierProvider` and the current `BuildContext`.
 
 ```dart
 ValueNotifierBuilder<NotifierA, NotifierAState>(
-  valueNotifier: valueNotifierA, // provide the local ValueNotifier instance
+  notifier: notifier, // provide the local ValueNotifier instance
   builder: (_, value) {
     // return widget here based on NotifierA's value
   }
@@ -229,7 +229,7 @@ ValueNotifierBuilder<NotifierA, NotifierAState>(
 
 **ValueNotifierSelector** is a Flutter widget which is analogous to `ValueNotifierBuilder` but allows developers to filter updates by selecting a new value based on the current notifier value. Unnecessary builds are prevented if the selected value does not change. The selected value must be immutable in order for `ValueNotifierSelector` to accurately determine whether `builder` should be called again.
 
-If the `valueNotifier` parameter is omitted, `ValueNotifierSelector` will automatically perform a lookup using `ValueNotifierProvider` and the current `BuildContext`.
+If the `notifier` parameter is omitted, `ValueNotifierSelector` will automatically perform a lookup using `ValueNotifierProvider` and the current `BuildContext`.
 
 ```dart
 ValueNotifierSelector<NotifierA, NotifierAState, SelectedState>(
@@ -248,7 +248,7 @@ ValueNotifierSelector<NotifierA, NotifierAState, SelectedState>(
 
 `listener` is only called once for each value change (**NOT** including the initial value) unlike `builder` in `ValueNotifierBuilder` and is a `void` function.
 
-If the valueNotifier parameter is omitted, `ValueNotifierListener` will automatically perform a lookup using `ValueNotifierProvider` and the current `BuildContext`.
+If the notifier parameter is omitted, `ValueNotifierListener` will automatically perform a lookup using `ValueNotifierProvider` and the current `BuildContext`.
 
 ```dart
 ValueNotifierListener<NotifierA, NotifierAState>(
@@ -263,7 +263,7 @@ Only specify the notifier if you wish to provide a notifier that is otherwise no
 
 ```dart
 ValueNotifierListener<NotifierA, NotifierAState>(
-  valueNotifier: valueNotifierA,
+  notifier: notifier,
   listener: (context, value) {
     // do stuff here based on NotifierA's value
   }
@@ -327,7 +327,7 @@ MultiValueNotifierListener(
 
 **ValueNotifierConsumer** exposes a `builder` and `listener` in order react to new values. `ValueNotifierConsumer` is analogous to a nested `ValueNotifierListener` and `ValueNotifierBuilder` but reduces the amount of boilerplate needed. `ValueNotifierConsumer` should only be used when it is necessary to both rebuild UI and execute other reactions to value changes in the `notifier`. `ValueNotifierConsumer` takes a required `ValueNotifierWidgetBuilder` and `ValueNotifierWidgetListener` and an optional `notifier`, `ValueNotifierBuilderCondition`, and `ValueNotifierListenerCondition`.
 
-If the `valueNotifier` parameter is omitted, `ValueNotifierConsumer` will automatically perform a lookup using
+If the `notifier` parameter is omitted, `ValueNotifierConsumer` will automatically perform a lookup using
 `ValueNotifierProvider` and the current `BuildContext`.
 
 ```dart
