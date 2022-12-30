@@ -16,7 +16,18 @@ import 'package:flutter_value_notifier/flutter_value_notifier.dart';
 ///
 /// If the [notifier] parameter is omitted, [ValueNotifierConsumer] will
 /// automatically perform a lookup using `ValueNotifierProvider` and the current
-/// `BuildContext`.
+/// [BuildContext].
+///
+/// ```dart
+/// ValueNotifierConsumer<NotifierA, NotifierAValue>(
+///   listener: (context, value) {
+///     // do stuff here based on NotifierA's value
+///   },
+///   builder: (context, value) {
+///     // return widget here based on NotifierA's value
+///   }
+/// )
+/// ```
 ///
 /// An optional [listenWhen] and [buildWhen] can be implemented for more
 /// granular control over when [listener] and [builder] are called.
@@ -29,6 +40,25 @@ import 'package:flutter_value_notifier/flutter_value_notifier.dart';
 /// [notifier] when the [ValueNotifierConsumer] is initialized.
 /// [listenWhen] and [buildWhen] are optional and if they aren't implemented,
 /// they will default to `true`.
+///
+/// ```dart
+/// ValueNotifierConsumer<NotifierA, NotifierAValue>(
+///   listenWhen: (previous, current) {
+///     // return true/false to determine whether or not
+///     // to invoke listener with value
+///   },
+///   listener: (context, value) {
+///     // do stuff here based on NotifierA's value
+///   },
+///   buildWhen: (previous, current) {
+///     // return true/false to determine whether or not
+///     // to rebuild the widget with value
+///   },
+///   builder: (context, value) {
+///     // return widget here based on NotifierA's value
+///   }
+/// )
+/// ```
 /// {@endtemplate}
 class ValueNotifierConsumer<VN extends ValueNotifier<V>, V>
     extends StatefulWidget {

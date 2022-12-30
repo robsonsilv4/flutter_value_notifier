@@ -10,11 +10,25 @@ mixin DependencyProviderSingleChildWidget on SingleChildWidget {}
 /// Takes a [Create] function that is responsible for creating the dependency
 /// and a `child` which will have access to the dependency via
 /// `DependencyProvider.of(context)`.
-///
 /// It is used as a dependency injection (DI) widget so that a single instance
 /// of a dependency can be provided to multiple widgets within a subtree.
 ///
+/// ```dart
+/// DependencyProvider(
+///   create: (context) => DependencyA(),
+///   child: ChildA(),
+/// );
+/// ```
+///
 /// Lazily creates the dependency unless `lazy` is set to `false`.
+///
+/// ```dart
+/// DependencyProvider(
+///   lazy: false,`
+///   create: (context) => DependencyA(),
+///   child: ChildA(),
+/// );
+/// ```
 /// {@endtemplate}
 class DependencyProvider<T> extends Provider<T>
     with DependencyProviderSingleChildWidget {

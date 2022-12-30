@@ -13,9 +13,23 @@ mixin ValueNotifierProviderSingleChildWidget on SingleChildWidget {}
 /// It is used as a dependency injection (DI) widget so that a single instance
 /// of a [ValueNotifier] can be provided to multiple widgets within a subtree.
 ///
+/// ```dart
+/// ValueNotifierProvider(
+///   create: (context) => NotifierA(),
+///   child: ChildA(),
+/// );
+/// ```
 /// It automatically handles closing the instance when used with [Create].
 /// By default, [Create] is called only when the instance is accessed.
 /// To override this behavior, set [lazy] to `false`.
+///
+/// ```dart
+/// ValueNotifierProvider(
+///   lazy: false,
+///   create: (context) => NotifierA(),
+///   child: ChildA(),
+/// );
+/// ```
 /// {@endtemplate}
 class ValueNotifierProvider<T extends ValueNotifier<Object?>>
     extends SingleChildStatelessWidget
@@ -41,6 +55,13 @@ class ValueNotifierProvider<T extends ValueNotifier<Object?>>
   /// `ValueNotifierProvider.value`.
   /// New instances should always be created using the
   /// default constructor within the [Create] function.
+  ///
+  /// ```dart
+  /// ValueNotifierProvider.value(
+  ///   value: ValueNotifierProvider.of<NotifierA>(context),
+  ///   child: ScreenA(),
+  /// );
+  /// ```
   const ValueNotifierProvider.value({
     super.key,
     required T value,

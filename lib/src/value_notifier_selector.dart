@@ -14,6 +14,16 @@ typedef ValueNotifierWidgetSelector<V, T> = T Function(V value);
 /// **Note**: the selected value must be immutable in order for
 /// [ValueNotifierSelector] to accurately determine whether [builder] should
 /// be called again.
+///
+/// /// ```dart
+/// ValueNotifierSelector<NotifierA, NotifierAValue, SelectedValue>(
+///   selector: (value) {
+///     // return selected value based on the provided value.
+///   },
+///   builder: (context, value) {
+///     // return widget here based on the selected value.
+///   },
+/// )
 /// {@endtemplate}
 class ValueNotifierSelector<VN extends ValueNotifier<V>, V, T>
     extends StatefulWidget {

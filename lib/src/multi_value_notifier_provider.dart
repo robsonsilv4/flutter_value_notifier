@@ -8,6 +8,40 @@ import 'package:provider/provider.dart';
 /// [MultiValueNotifierProvider] improves the readability and eliminates the
 /// need to nest multiple [ValueNotifierProvider]s.
 ///
+/// By using [MultiValueNotifierProvider] we can go from:
+///
+/// ```dart
+/// ValueNotifierProvider<BlocA>(
+///   create: (context) => NotifierA(),
+///   child: ValueNotifierProvider<NotifierB>(
+///     create: (context) => NotifierB(),
+///     child: ValueNotifierProvider<NotifierC>(
+///       create: (context) => NotifierC(),
+///       child: ChildA(),
+///     )
+///   )
+/// )
+/// ```
+///
+/// to:
+///
+/// ```dart
+/// MultiValueNotifierProvider(
+///   providers: [
+///     ValueNotifierProvider<NotifierA>(
+///       create: (context) => NotifierA(),
+///     ),
+///     ValueNotifierProvider<NotifierB>(
+///       create: (context) => NotifierB(),
+///     ),
+///     ValueNotifierProvider<NotifierC>(
+///       create: (context) => NotifierC(),
+///     ),
+///   ],
+///   child: ChildA(),
+/// )
+/// ```
+///
 /// [MultiValueNotifierProvider] converts the [ValueNotifierProvider] list into
 /// a tree of nested [ValueNotifierProvider] widgets.
 /// As a result, the only advantage of using [MultiValueNotifierProvider] is

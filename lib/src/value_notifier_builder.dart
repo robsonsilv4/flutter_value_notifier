@@ -28,9 +28,26 @@ typedef ValueNotifierBuilderCondition<V> = bool Function(V previous, V current);
 /// automatically perform a lookup using [ValueNotifierProvider] and the current
 /// [BuildContext].
 ///
+/// ```dart
+/// ValueNotifierBuilder<NotifierA, NotifierAValue>(
+///   builder: (context, value) {
+///   // return widget here based on NotifierA's value
+///   }
+/// )
+/// ```
+///
 /// Only specify the [notifier] if you wish to provide a [notifier]
 /// that is otherwise not accessible via [ValueNotifierProvider] and the current
 /// [BuildContext].
+///
+/// ```dart
+/// ValueNotifierBuilder<NotifierA, NotifierAValue>(
+///   notifier: blocA,
+///   builder: (context, value) {
+///   // return widget here based on NotifierA's value
+///   }
+/// )
+/// ```
 /// {@endtemplate}
 ///
 /// {@template value_notifier_builder_build_when}
@@ -45,6 +62,18 @@ typedef ValueNotifierBuilderCondition<V> = bool Function(V previous, V current);
 /// The previous `value` will be initialized to the `value` of the [notifier]
 /// when the [ValueNotifierBuilder] is initialized.
 /// [buildWhen] is optional and if omitted, it will default to `true`.
+///
+/// ```dart
+/// ValueNotifierBuilder<NotifierA, NotifierAValue>(
+///   buildWhen: (previous, current) {
+///     // return true/false to determine whether or not
+///     // to rebuild the widget with value
+///   },
+///   builder: (context, value) {
+///     // return widget here based on NotifierA's value
+///   }
+/// )
+/// ```
 /// {@endtemplate}
 class ValueNotifierBuilder<VN extends ValueNotifier<V>, V>
     extends ValueNotifierBuilderBase<VN, V> {

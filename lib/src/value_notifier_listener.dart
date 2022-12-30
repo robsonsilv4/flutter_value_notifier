@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart' show ReadContext, SelectContext;
+import 'package:flutter_value_notifier/flutter_value_notifier.dart';
 import 'package:provider/single_child_widget.dart';
 
 /// Mixin which allows `MultiValueNotifierListener` to infer the types
@@ -34,12 +34,31 @@ typedef ValueNotifierListenerCondition<V> = bool Function(
 /// unlike the `builder` in `ValueNotifierBuilder`.
 ///
 /// If the [notifier] parameter is omitted, [ValueNotifierListener] will
-/// automatically perform a lookup using `ValueNotifierProvider` and the current
-/// `BuildContext`.
+/// automatically perform a lookup using [ValueNotifierProvider] and the current
+/// [BuildContext].
+///
+/// ```dart
+/// ValueNotifierListener<NotifierA, NotifierAValue>(
+///   listener: (context, value) {
+///     // do stuff here based on NotifierA's value
+///   },
+///   child: Container(),
+/// )
+/// ```
 ///
 /// Only specify the [notifier] if you wish to provide a [notifier]
-/// that is otherwise not accessible via `ValueNotifierProvider` and the current
-/// `BuildContext`.
+/// that is otherwise not accessible via [ValueNotifierProvider] and the current
+/// [BuildContext].
+///
+/// ```dart
+/// ValueNotifierListener<NotifierA, NotifierAValue>(
+///   notifier: notifierA,
+///   listener: (context, state) {
+///     // do stuff here based on NotifierA's value
+///   },
+///   child: Container(),
+/// )
+/// ```
 /// {@endtemplate}
 ///
 /// {@template value_notifier_listener_listen_when}
@@ -52,6 +71,19 @@ typedef ValueNotifierListenerCondition<V> = bool Function(
 /// The previous `value` will be initialized to the `value` of the
 /// [notifier] when the [ValueNotifierListener] is initialized.
 /// [listenWhen] is optional and if omitted, it will default to `true`.
+///
+/// ```dart
+/// ValueNotifierListener<NotifierA, NotifierAValue>(
+///   listenWhen: (previous, current) {
+///     // return true/false to determine whether or not
+///     // to invoke listener with value
+///   },
+///   listener: (context, value) {
+///     // do stuff here based on NotifierA's value
+///   }
+///   child: Container(),
+/// )
+/// ```
 /// {@endtemplate}
 class ValueNotifierListener<VN extends ValueNotifier<V>, V>
     extends ValueNotifierListenerBase<VN, V>

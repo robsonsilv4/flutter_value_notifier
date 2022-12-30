@@ -8,6 +8,34 @@ import 'package:provider/provider.dart';
 /// [MultiDependencyProvider] improves the readability and eliminates the need
 /// to nest multiple [DependencyProvider]s.
 ///
+/// By using [MultiDependencyProvider] we can go from:
+///
+/// ```dart
+/// DependencyProvider<DependencyA>(
+///   create: (context) => DependencyA(),
+///   child: DependencyProvider<DependencyB>(
+///     create: (context) => DependencyB(),
+///     child: DependencyProvider<DependencyC>(
+///       create: (context) => DependencyC(),
+///       child: ChildA(),
+///     )
+///   )
+/// )
+/// ```
+///
+/// to:
+///
+/// ```dart
+/// MultiDependencyProvider(
+///   providers: [
+///     DependencyProvider<DependencyA>(create: (context) => DependencyA()),
+///     DependencyProvider<DependencyB>(create: (context) => DependencyB()),
+///     DependencyProvider<DependencyC>(create: (context) => DependencyC()),
+///   ],
+///   child: ChildA(),
+/// )
+/// ```
+///
 /// [MultiDependencyProvider] converts the [DependencyProvider] list into a tree
 /// of nested [DependencyProvider] widgets.
 /// As a result, the only advantage of using [MultiDependencyProvider] is
