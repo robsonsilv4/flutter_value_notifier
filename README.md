@@ -4,10 +4,11 @@
 
 <p align="center">
 <a href="https://pub.dev/packages/flutter_value_notifier"><img src="https://img.shields.io/pub/v/flutter_value_notifier.svg" alt="Pub"></a>
-<a href="https://github.com/robsonsilv4/flutter_value_notifier/actions"><img src="https://github.com/robsonsilv4/flutter_value_notifier/workflows/build/badge.svg" alt="build"></a>
-<a href="https://codecov.io/gh/robsonsilv4/flutter_value_notifier"><img src="https://codecov.io/gh/robsonsilv4/flutter_value_notifier/branch/master/graph/badge.svg" alt="Codecov"></a>
-<a href="https://github.com/robsonsilv4/bloc"><img src="https://img.shields.io/github/stars/robsonsilv4/bloc.svg?style=flat&logo=github&colorB=deeppink&label=stars" alt="Stars on Github"></a>
+<a href="https://github.com/robsonsilv4/flutter_value_notifier/actions/workflows/main.yaml"><img src="https://img.shields.io/github/actions/workflow/status/robsonsilv4/flutter_value_notifier/main.yaml?branch=main&label=build&labelColor=333940&logo=github" alt="Build"></a>
+<a href="https://codecov.io/gh/robsonsilv4/flutter_value_notifier"><img src="https://codecov.io/gh/robsonsilv4/flutter_value_notifier/branch/main/graph/badge.svg" alt="Codecov"></a>
+<a href="https://github.com/robsonsilv4/flutter_value_notifier"><img src="https://img.shields.io/github/stars/robsonsilv4/flutter_value_notifier.svg?style=flat&logo=github&colorB=deeppink&label=stars" alt="Stars on Github"></a>
 <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
+<a href="https://twitter.com/robsonsilv4"><img src="https://img.shields.io/twitter/follow/robsonsilv4?style=flat&label=Follow&color=1DA1F2&labelColor=333940&logo=twitter&logoColor=fff" alt="Follow on Twitter"></a>
 </p>
 
 ---
