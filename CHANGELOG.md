@@ -1,3 +1,7 @@
+# 1.5.1
+
+- chore: add pub links
+
 # 1.5.0
 
 - doc: fix badges links and add twitter link
