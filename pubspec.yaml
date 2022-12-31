@@ -1,6 +1,9 @@
 name: flutter_value_notifier
 description: Flutter Widgets that make it easy to implement state management patterns. Built to be used with the ValueNotifier class.
 version: 1.5.0
+repository: https://github.com/robsonsilv4/flutter_value_notifier
+issue_tracker: https://github.com/robsonsilv4/flutter_value_notifier/issues
+documentation: https://github.com/robsonsilv4/flutter_value_notifier/blob/main/README.md
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
