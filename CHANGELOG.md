@@ -1,3 +1,20 @@
+# 1.5.0
+
+- doc: fix badges links and add twitter link
+- doc: rename valueNotifier references in README
+- doc: add code snippets do api docs
+- doc: remove unneeded comment space
+- fix: add missing ci coverage steps
+- ci: move upload coverage to run block
+- ci: add Codecov step name
+- doc: update README header
+- ci: add main workflow
+- chore: add pull request template
+- chore: add code owners
+- refactor: rename valueNotifier to notifier
+
+BREAKING: when specifying ValueNotifier instances, use notifier instead of valueNotifier
+
 # 1.4.0
 
 - doc: refactor 1.0.0 changelog
@@ -25,7 +42,7 @@
 
 # 1.0.0
 
-- Initial version of the library.
-- Based on [flutter_bloc](https://pub.dev/packages/flutter_bloc) from [bloc library](https://bloclibrary.dev/).
+- feat: initial version of the library
+- based on [flutter_bloc](https://pub.dev/packages/flutter_bloc) from [bloc library](https://bloclibrary.dev/)
 
 Thanks to Felix Angelov ([@felangel](https://github.com/felangel)) and all [bloc library contributors](https://github.com/felangel/bloc/graphs/contributors).
