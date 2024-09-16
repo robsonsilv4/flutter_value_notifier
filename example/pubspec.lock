@@ -203,10 +203,10 @@ packages:
     dependency: "direct dev"
     description:
       name: very_good_analysis
-      sha256: "88868b04c9dc5254e11a3c979b3a83740bd92f6ab2b31e4e5f0277ec130913cd"
+      sha256: ebc48c51db35beeeec8c414e32f7bd78e612bd7f5992ccb0d46e19edaeb40b08
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.2"
+    version: "4.0.0+1"
   vm_service:
     dependency: transitive
     description:
