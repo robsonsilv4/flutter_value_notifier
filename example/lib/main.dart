@@ -120,7 +120,10 @@ class CounterView extends StatelessWidget {
       body: Center(
         child: ValueNotifierBuilder<CounterNotifier, int>(
           builder: (context, count) {
-            return Text('$count', style: Theme.of(context).textTheme.headline1);
+            return Text(
+              '$count',
+              style: Theme.of(context).textTheme.titleLarge,
+            );
           },
         ),
       ),
