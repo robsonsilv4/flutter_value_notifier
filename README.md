@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/325/high-voltage_26a1.png" height="100" alt="Flutter Value Notifier" />
+<img src="https://raw.githubusercontent.com/robsonsilv4/flutter_value_notifier/main/assets/logo.png" height="100" alt="Flutter Value Notifier" />
 </p>
 
 <p align="center">
@@ -429,6 +429,6 @@ MultiDependencyProvider(
 
 ## Maintainers
 
-- [Robson Silva](https://github.com/robsonsilv4)
+- [@robsonsilv4 (Robson Silva)](https://github.com/robsonsilv4)
 
-Thanks to Felix Angelov ([@felangel](https://github.com/felangel)) and all [bloc library contributors](https://github.com/felangel/bloc/graphs/contributors).
+Thanks to [@felangel](https://github.com/felangel), [bloc library contributors](https://github.com/felangel/bloc/graphs/contributors) and [Icons8](https://icons8.com) by [Electricity](https://icons8.com/icon/0p9q9Fp5U2bz/electricity) icon.

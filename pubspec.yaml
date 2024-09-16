@@ -5,6 +5,9 @@ repository: https://github.com/robsonsilv4/flutter_value_notifier
 issue_tracker: https://github.com/robsonsilv4/flutter_value_notifier/issues
 documentation: https://github.com/robsonsilv4/flutter_value_notifier/blob/main/README.md
 topics: [value-notifier, state-management, bloc, provider]
+screenshots:
+  - description: "The Flutter ValueNotifier logo."
+    path: assets/logo.png
 
 environment:
   sdk: ">=2.17.0 <4.0.0"
