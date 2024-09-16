@@ -422,7 +422,7 @@ MultiDependencyProvider(
 
 ## Dart Versions
 
-- Dart 2: >=2.17.0
+- Dart 2: >=2.19.0
 - Flutter 3: >=3.0.0
 
 ## Maintainers
