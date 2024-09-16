@@ -71,7 +71,7 @@ class _TestStatefulAppState extends State<TestStatefulApp> {
                 onPressed: () {
                   setState(() => _dependency = const Dependency(0));
                 },
-              )
+              ),
             ],
           ),
           body: widget.child,

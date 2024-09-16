@@ -171,7 +171,9 @@ void main() {
             ValueNotifierProvider<CounterNotifier>(
               create: (_) => CounterNotifier(),
             ),
-            ValueNotifierProvider<ThemeNotifier>(create: (_) => ThemeNotifier())
+            ValueNotifierProvider<ThemeNotifier>(
+              create: (_) => ThemeNotifier(),
+            ),
           ],
           child: const TestApp(),
         ),
@@ -193,7 +195,7 @@ void main() {
         MultiValueNotifierProvider(
           providers: [
             ValueNotifierProvider(create: (_) => CounterNotifier()),
-            ValueNotifierProvider(create: (_) => ThemeNotifier())
+            ValueNotifierProvider(create: (_) => ThemeNotifier()),
           ],
           child: const TestApp(),
         ),

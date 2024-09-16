@@ -75,7 +75,7 @@ class _MyStatefulAppState extends State<MyStatefulApp> {
                 onPressed: () {
                   setState(() => valueNotifier = CounterNotifier());
                 },
-              )
+              ),
             ],
           ),
           body: widget.child,

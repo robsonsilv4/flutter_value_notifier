@@ -125,7 +125,7 @@ class CounterAppState extends State<CounterApp> {
               key: const Key('counterAppIncrementButton'),
               onPressed: _notifier.increment,
               child: const SizedBox(),
-            )
+            ),
           ],
         ),
       ),
