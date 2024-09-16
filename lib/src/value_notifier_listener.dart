@@ -76,7 +76,7 @@ typedef ValueNotifierListenerCondition<V> = bool Function(
 ///   },
 ///   listener: (context, value) {
 ///     // do stuff here based on NotifierA's value
-///   }
+///   },
 ///   child: Container(),
 /// )
 /// ```
