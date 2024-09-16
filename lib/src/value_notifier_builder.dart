@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_value_notifier/flutter_value_notifier.dart';
 
@@ -94,6 +95,14 @@ class ValueNotifierBuilder<VN extends ValueNotifier<V>, V>
 
   @override
   Widget build(BuildContext context, V value) => builder(context, value);
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(
+      ObjectFlagProperty<ValueNotifierWidgetBuilder<V>>.has('builder', builder),
+    );
+  }
 }
 
 /// {@template value_notifier_builder_base}
@@ -127,6 +136,19 @@ abstract class ValueNotifierBuilderBase<VN extends ValueNotifier<V>, V>
   @override
   State<ValueNotifierBuilderBase<VN, V>> createState() =>
       _ValueNotifierBuilderBaseState<VN, V>();
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(
+        ObjectFlagProperty<ValueNotifierBuilderCondition<V>?>.has(
+          'buildWhen',
+          buildWhen,
+        ),
+      )
+      ..add(DiagnosticsProperty<VN?>('notifier', notifier));
+  }
 }
 
 class _ValueNotifierBuilderBaseState<VN extends ValueNotifier<V>, V>

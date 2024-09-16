@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_value_notifier/flutter_value_notifier.dart';
@@ -183,6 +184,25 @@ void main() {
 
       expect(find.text('isEven: false'), findsOneWidget);
       expect(find.text('isEven: true'), findsNothing);
+    });
+
+    testWidgets('overrides debugFillProperties', (tester) async {
+      final builder = DiagnosticPropertiesBuilder();
+
+      ValueNotifierSelector(
+        notifier: CounterNotifier(),
+        builder: (context, value) => const SizedBox(),
+        selector: (state) => state,
+      ).debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) => node.toString())
+          .toList();
+
+      expect(description, anyElement(contains('notifier: CounterNotifier')));
+      expect(description, contains('has builder'));
+      expect(description, contains('has selector'));
     });
   });
 }

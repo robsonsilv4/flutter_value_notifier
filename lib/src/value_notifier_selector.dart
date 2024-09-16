@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_value_notifier/flutter_value_notifier.dart';
 
@@ -55,6 +56,25 @@ class ValueNotifierSelector<VN extends ValueNotifier<V>, V, T>
   @override
   State<ValueNotifierSelector<VN, V, T>> createState() =>
       _ValueNotifierSelectorState<VN, V, T>();
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty<VN?>('notifier', notifier))
+      ..add(
+        ObjectFlagProperty<ValueNotifierWidgetBuilder<T>>.has(
+          'builder',
+          builder,
+        ),
+      )
+      ..add(
+        ObjectFlagProperty<ValueNotifierWidgetSelector<V, T>>.has(
+          'selector',
+          selector,
+        ),
+      );
+  }
 }
 
 class _ValueNotifierSelectorState<VN extends ValueNotifier<V>, V, T>

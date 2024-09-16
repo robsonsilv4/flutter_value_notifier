@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_value_notifier/flutter_value_notifier.dart';
 import 'package:provider/single_child_widget.dart';
@@ -135,6 +136,25 @@ abstract class ValueNotifierListenerBase<VN extends ValueNotifier<V>, V>
   @override
   SingleChildState<ValueNotifierListenerBase<VN, V>> createState() =>
       _ValueNotifierListenerBaseState<VN, V>();
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty<VN?>('notifier', notifier))
+      ..add(
+        ObjectFlagProperty<ValueNotifierWidgetListener<V>>.has(
+          'listener',
+          listener,
+        ),
+      )
+      ..add(
+        ObjectFlagProperty<ValueNotifierListenerCondition<V>?>.has(
+          'listenWhen',
+          listenWhen,
+        ),
+      );
+  }
 }
 
 class _ValueNotifierListenerBaseState<VN extends ValueNotifier<V>, V>

@@ -1,6 +1,21 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_value_notifier/flutter_value_notifier.dart';
+
+class ThemeNotifier extends ValueNotifier<ThemeData> {
+  ThemeNotifier() : super(ThemeData.light());
+
+  void setDarkTheme() => value = ThemeData.dark();
+  void setLightTheme() => value = ThemeData.light();
+}
+
+class DarkThemeNotifier extends ValueNotifier<ThemeData> {
+  DarkThemeNotifier() : super(ThemeData.dark());
+
+  void setDarkTheme() => value = ThemeData.dark();
+  void setLightTheme() => value = ThemeData.light();
+}
 
 class ThemeApp extends StatefulWidget {
   const ThemeApp({
@@ -48,7 +63,7 @@ class ThemeAppState extends State<ThemeApp> {
                 child: const SizedBox(),
                 onPressed: () {
                   setState(() {
-                    _themeValueNotifier = DarkThemeValueNotifier();
+                    _themeValueNotifier = DarkThemeNotifier();
                   });
                 },
               ),
@@ -69,18 +84,11 @@ class ThemeAppState extends State<ThemeApp> {
   }
 }
 
-class ThemeValueNotifier extends ValueNotifier<ThemeData> {
-  ThemeValueNotifier() : super(ThemeData.light());
+class CounterNotifier extends ValueNotifier<int> {
+  CounterNotifier({int seed = 0}) : super(seed);
 
-  void setDarkTheme() => value = ThemeData.dark();
-  void setLightTheme() => value = ThemeData.light();
-}
-
-class DarkThemeValueNotifier extends ValueNotifier<ThemeData> {
-  DarkThemeValueNotifier() : super(ThemeData.dark());
-
-  void setDarkTheme() => value = ThemeData.dark();
-  void setLightTheme() => value = ThemeData.light();
+  void increment() => value = value + 1;
+  void decrement() => value = value - 1;
 }
 
 class CounterApp extends StatefulWidget {
@@ -91,7 +99,7 @@ class CounterApp extends StatefulWidget {
 }
 
 class CounterAppState extends State<CounterApp> {
-  final CounterValueNotifier _notifier = CounterValueNotifier();
+  final CounterNotifier _notifier = CounterNotifier();
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +108,7 @@ class CounterAppState extends State<CounterApp> {
         key: const Key('counterApp'),
         body: Column(
           children: <Widget>[
-            ValueNotifierBuilder<CounterValueNotifier, int>(
+            ValueNotifierBuilder<CounterNotifier, int>(
               notifier: _notifier,
               buildWhen: (previousValue, value) {
                 return (previousValue + value) % 3 == 0;
@@ -112,7 +120,7 @@ class CounterAppState extends State<CounterApp> {
                 );
               },
             ),
-            ValueNotifierBuilder<CounterValueNotifier, int>(
+            ValueNotifierBuilder<CounterNotifier, int>(
               notifier: _notifier,
               builder: (_, count) {
                 return Text(
@@ -145,7 +153,7 @@ void main() {
     testWidgets(
       'passes initial value to widget',
       (tester) async {
-        final themeValueNotifier = ThemeValueNotifier();
+        final themeValueNotifier = ThemeNotifier();
         var numBuilds = 0;
         await tester.pumpWidget(
           ThemeApp(
@@ -164,7 +172,7 @@ void main() {
     testWidgets(
       'receives events and sends value updates to widget',
       (tester) async {
-        final themeValueNotifier = ThemeValueNotifier();
+        final themeValueNotifier = ThemeNotifier();
         var numBuilds = 0;
         await tester.pumpWidget(
           ThemeApp(
@@ -186,12 +194,12 @@ void main() {
       'infers the valueNotifier from the context if the valueNotifier is '
       'not provided',
       (tester) async {
-        final themeValueNotifier = ThemeValueNotifier();
+        final themeValueNotifier = ThemeNotifier();
         var numBuilds = 0;
         await tester.pumpWidget(
           ValueNotifierProvider.value(
             value: themeValueNotifier,
-            child: ValueNotifierBuilder<ThemeValueNotifier, ThemeData>(
+            child: ValueNotifierBuilder<ThemeNotifier, ThemeData>(
               builder: (_, theme) {
                 numBuilds++;
                 return MaterialApp(
@@ -223,13 +231,13 @@ void main() {
     testWidgets(
       'updates valueNotifier and performs new lookup when widget is updated',
       (tester) async {
-        final themeValueNotifier = ThemeValueNotifier();
+        final themeValueNotifier = ThemeNotifier();
         var numBuilds = 0;
         await tester.pumpWidget(
           StatefulBuilder(
             builder: (_, setState) => ValueNotifierProvider.value(
               value: themeValueNotifier,
-              child: ValueNotifierBuilder<ThemeValueNotifier, ThemeData>(
+              child: ValueNotifierBuilder<ThemeNotifier, ThemeData>(
                 builder: (_, theme) {
                   numBuilds++;
                   return MaterialApp(
@@ -259,7 +267,7 @@ void main() {
       'updates when the valueNotifier is changed at runtime to a different  '
       'valueNotifier and unsubscribes from old valueNotifier',
       (tester) async {
-        final themeValueNotifier = ThemeValueNotifier();
+        final themeValueNotifier = ThemeNotifier();
         var numBuilds = 0;
         await tester.pumpWidget(
           ThemeApp(
@@ -294,7 +302,7 @@ void main() {
       'does not update when the valueNotifier is changed at runtime to same '
       'valueNotifier and stays subscribed to current valueNotifier',
       (tester) async {
-        final themeValueNotifier = DarkThemeValueNotifier();
+        final themeValueNotifier = DarkThemeNotifier();
         var numBuilds = 0;
         await tester.pumpWidget(
           ThemeApp(
@@ -328,7 +336,7 @@ void main() {
     testWidgets(
       'shows latest value instead of initial value',
       (tester) async {
-        final themeValueNotifier = ThemeValueNotifier()..setDarkTheme();
+        final themeValueNotifier = ThemeNotifier()..setDarkTheme();
         await tester.pumpAndSettle();
         var numBuilds = 0;
         await tester.pumpWidget(
@@ -394,9 +402,9 @@ void main() {
         final buildWhenPreviousValue = <int>[];
         final buildWhenCurrentValue = <int>[];
         final values = <int>[];
-        final counterValueNotifier = CounterValueNotifier();
+        final counterValueNotifier = CounterNotifier();
         await tester.pumpWidget(
-          ValueNotifierBuilder<CounterValueNotifier, int>(
+          ValueNotifierBuilder<CounterNotifier, int>(
             notifier: counterValueNotifier,
             buildWhen: (previous, value) {
               if (value.isEven) {
@@ -430,13 +438,13 @@ void main() {
       (tester) async {
         const key = Key('__target__');
         final values = <int>[];
-        final counterValueNotifier = CounterValueNotifier();
+        final counterValueNotifier = CounterNotifier();
         await tester.pumpWidget(
           Directionality(
             textDirection: TextDirection.ltr,
             child: StatefulBuilder(
               builder: (_, setState) =>
-                  ValueNotifierBuilder<CounterValueNotifier, int>(
+                  ValueNotifierBuilder<CounterNotifier, int>(
                 notifier: counterValueNotifier,
                 buildWhen: (_, value) => value.isEven,
                 builder: (_, value) {
@@ -467,14 +475,14 @@ void main() {
     testWidgets(
       'rebuilds when provided valueNotifier is changed',
       (tester) async {
-        final firstCounterValueNotifier = CounterValueNotifier();
-        final secondCounterValueNotifier = CounterValueNotifier(seed: 100);
+        final firstCounterValueNotifier = CounterNotifier();
+        final secondCounterValueNotifier = CounterNotifier(seed: 100);
         await tester.pumpWidget(
           Directionality(
             textDirection: TextDirection.ltr,
             child: ValueNotifierProvider.value(
               value: firstCounterValueNotifier,
-              child: ValueNotifierBuilder<CounterValueNotifier, int>(
+              child: ValueNotifierBuilder<CounterNotifier, int>(
                 builder: (_, value) => Text('Count $value'),
               ),
             ),
@@ -490,7 +498,7 @@ void main() {
             textDirection: TextDirection.ltr,
             child: ValueNotifierProvider.value(
               value: secondCounterValueNotifier,
-              child: ValueNotifierBuilder<CounterValueNotifier, int>(
+              child: ValueNotifierBuilder<CounterNotifier, int>(
                 builder: (_, value) => Text('Count $value'),
               ),
             ),
@@ -503,5 +511,24 @@ void main() {
         expect(find.text('Count 101'), findsOneWidget);
       },
     );
+
+    testWidgets('overrides debugFillProperties', (tester) async {
+      final builder = DiagnosticPropertiesBuilder();
+
+      ValueNotifierBuilder(
+        notifier: CounterNotifier(),
+        builder: (context, state) => const SizedBox(),
+        buildWhen: (previous, current) => previous != current,
+      ).debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) => node.toString())
+          .toList();
+
+      expect(description, contains('has buildWhen'));
+      expect(description, anyElement(contains('notifier: CounterNotifier')));
+      expect(description, contains('has builder'));
+    });
   });
 }

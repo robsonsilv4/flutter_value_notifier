@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_value_notifier/flutter_value_notifier.dart';
@@ -511,6 +512,26 @@ void main() {
       await tester.pump();
 
       expect(values, expectedStates);
+    });
+
+    testWidgets('overrides debugFillProperties', (tester) async {
+      final builder = DiagnosticPropertiesBuilder();
+
+      ValueNotifierListener(
+        notifier: CounterNotifier(),
+        listener: (context, value) {},
+        listenWhen: (previous, current) => previous != current,
+        child: const SizedBox(),
+      ).debugFillProperties(builder);
+
+      final description = builder.properties
+          .where((node) => !node.isFiltered(DiagnosticLevel.info))
+          .map((node) => node.toString())
+          .toList();
+
+      expect(description, anyElement(contains('notifier: CounterNotifier')));
+      expect(description, contains('has listener'));
+      expect(description, contains('has listenWhen'));
     });
   });
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -137,5 +138,11 @@ class ValueNotifierProvider<T extends ValueNotifier<Object?>>
     void subscription() => element.markNeedsNotifyDependents();
     value.addListener(subscription);
     return () => value.removeListener(subscription);
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<bool>('lazy', lazy));
   }
 }
