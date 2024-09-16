@@ -81,8 +81,8 @@ class _TestStatefulAppState extends State<TestStatefulApp> {
   }
 }
 
-class TestAppWithoutProvider extends MaterialApp {
-  const TestAppWithoutProvider({super.key, required Widget child})
+class TestAppNoProvider extends MaterialApp {
+  const TestAppNoProvider({super.key, required Widget child})
       : super(home: child);
 }
 
@@ -97,25 +97,6 @@ class CounterPage extends StatelessWidget {
     final dependency = DependencyProvider.of<Dependency>(context);
     return Scaffold(
       body: Text('${dependency.data}', key: const Key('value_data')),
-    );
-  }
-}
-
-class RoutePage extends StatelessWidget {
-  const RoutePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: ElevatedButton(
-        key: const Key('route_button'),
-        child: const SizedBox(),
-        onPressed: () {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute<void>(builder: (_) => const SizedBox()),
-          );
-        },
-      ),
     );
   }
 }
@@ -184,7 +165,7 @@ void main() {
       'context',
       (tester) async {
         const child = CounterPage();
-        await tester.pumpWidget(const TestAppWithoutProvider(child: child));
+        await tester.pumpWidget(const TestAppNoProvider(child: child));
         final dynamic exception = tester.takeException();
         const expectedMessage = '''
         DependencyProvider.of() called with a context that does not contain a dependency of type Dependency.
