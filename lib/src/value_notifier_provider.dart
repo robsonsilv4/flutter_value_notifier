@@ -2,10 +2,6 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
-/// Mixin which allows `MultiValueNotifierProvider` to infer the types
-/// of multiple [ValueNotifierProvider]s.
-mixin ValueNotifierProviderSingleChildWidget on SingleChildWidget {}
-
 /// {@template value_notifier_provider}
 /// Takes a [Create] function that is responsible for
 /// creating the [ValueNotifier] and a [child] which will have access
@@ -32,8 +28,7 @@ mixin ValueNotifierProviderSingleChildWidget on SingleChildWidget {}
 /// ```
 /// {@endtemplate}
 class ValueNotifierProvider<T extends ValueNotifier<Object?>>
-    extends SingleChildStatelessWidget
-    with ValueNotifierProviderSingleChildWidget {
+    extends SingleChildStatelessWidget {
   /// {@macro value_notifier_provider}
   const ValueNotifierProvider({
     super.key,

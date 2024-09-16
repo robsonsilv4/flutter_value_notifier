@@ -2,10 +2,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_value_notifier/flutter_value_notifier.dart';
 import 'package:provider/single_child_widget.dart';
 
-/// Mixin which allows `MultiValueNotifierListener` to infer the types
-/// of multiple [ValueNotifierListener]s.
-mixin ValueNotifierListenerSingleChildWidget on SingleChildWidget {}
-
 /// Signature for the `listener` function which takes the `BuildContext` along
 /// with the `value` and is responsible for executing in response to
 /// `value` changes.
@@ -86,8 +82,7 @@ typedef ValueNotifierListenerCondition<V> = bool Function(
 /// ```
 /// {@endtemplate}
 class ValueNotifierListener<VN extends ValueNotifier<V>, V>
-    extends ValueNotifierListenerBase<VN, V>
-    with ValueNotifierListenerSingleChildWidget {
+    extends ValueNotifierListenerBase<VN, V> {
   /// {@macro value_notifier_listener}
   /// {@macro value_notifier_listener_listen_when}
   const ValueNotifierListener({

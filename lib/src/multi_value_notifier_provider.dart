@@ -51,7 +51,7 @@ class MultiValueNotifierProvider extends MultiProvider {
   /// {@macro multi_value_notifier_provider}
   MultiValueNotifierProvider({
     super.key,
-    required List<ValueNotifierProviderSingleChildWidget> super.providers,
+    required super.providers,
     required Widget super.child,
   });
 }

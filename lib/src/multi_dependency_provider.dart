@@ -45,7 +45,7 @@ class MultiDependencyProvider extends MultiProvider {
   /// {@macro multi_dependency_provider}
   MultiDependencyProvider({
     super.key,
-    required List<DependencyProviderSingleChildWidget> super.providers,
+    required super.providers,
     required Widget super.child,
   });
 }

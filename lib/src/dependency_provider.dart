@@ -1,10 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:provider/single_child_widget.dart';
-
-/// Mixin which allows `MultiDependencyProvider` to infer the types
-/// of multiple [DependencyProvider]s.
-mixin DependencyProviderSingleChildWidget on SingleChildWidget {}
 
 /// {@template dependency_provider}
 /// Takes a [Create] function that is responsible for creating the dependency
@@ -30,8 +25,7 @@ mixin DependencyProviderSingleChildWidget on SingleChildWidget {}
 /// );
 /// ```
 /// {@endtemplate}
-class DependencyProvider<T> extends Provider<T>
-    with DependencyProviderSingleChildWidget {
+class DependencyProvider<T> extends Provider<T> {
   /// {@macro dependency_provider}
   DependencyProvider({
     super.key,
