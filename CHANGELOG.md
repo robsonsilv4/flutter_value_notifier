@@ -1,9 +1,7 @@
-# 1.6.1
-
-- chore: update project to v1.6.1
-
 # 1.6.0
 
+- chore: downgrade project to v1.6.0
+- chore: update project to v1.6.1
 - chore: bump dependencies
 - chore: update descriptions
 - chore: add logo and screenshot
