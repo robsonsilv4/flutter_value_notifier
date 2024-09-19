@@ -1,3 +1,7 @@
+# 1.6.1
+
+- chore: update project to v1.6.1
+
 # 1.6.0
 
 - chore: bump dependencies
