@@ -1,3 +1,18 @@
+# 1.6.0
+
+- chore: bump dependencies
+- chore: update descriptions
+- chore: add logo and screenshot
+- chore: removed unused test class
+- feat: override debugFillProperties
+- docs: add missing comma to listener
+- chore: update copyright year
+- chore: add topics to pubspec
+- chore: update sdk constraints
+- chore: update to Dart 2.19
+- refactor: remove unnecessary single child widget mixins
+- refactor(example): migrated deprecated headline1 style
+
 # 1.5.1
 
 - chore: add pub links
@@ -49,4 +64,4 @@ BREAKING: when specifying ValueNotifier instances, use notifier instead of value
 - feat: initial version of the library
 - based on [flutter_bloc](https://pub.dev/packages/flutter_bloc) from [bloc library](https://bloclibrary.dev/)
 
-Thanks to Felix Angelov ([@felangel](https://github.com/felangel)) and all [bloc library contributors](https://github.com/felangel/bloc/graphs/contributors).
+Thanks to [@felangel](https://github.com/felangel) and all [bloc library contributors](https://github.com/felangel/bloc/graphs/contributors).
